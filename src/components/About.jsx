@@ -1,23 +1,29 @@
 import { about } from '../data/content'
 import Particles from './Particles'
 
+const prefersReduced =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 export default function About() {
   return (
     <section id="about" className="section about">
-      <Particles
-        className="about__particles"
-        particleColors={['#c9a96a', '#e4c893', '#a9b0bd']}
-        particleCount={180}
-        particleSpread={8}
-        speed={0.05}
-        particleBaseSize={130}
-        alphaParticles={true}
-        moveParticlesOnHover={false}
-        sizeRandomness={1}
-        cameraDistance={15}
-        disableRotation={false}
-        pixelRatio={Math.min(typeof window !== 'undefined' && window.devicePixelRatio ? window.devicePixelRatio : 1, 2)}
-      />
+      {!prefersReduced && (
+        <Particles
+          className="about__particles"
+          particleColors={['#c9a96a', '#e4c893', '#a9b0bd']}
+          particleCount={180}
+          particleSpread={8}
+          speed={0.05}
+          particleBaseSize={130}
+          alphaParticles={true}
+          moveParticlesOnHover={false}
+          sizeRandomness={1}
+          cameraDistance={15}
+          disableRotation={false}
+          pixelRatio={Math.min(typeof window !== 'undefined' && window.devicePixelRatio ? window.devicePixelRatio : 1, 2)}
+        />
+      )}
 
       <div className="container">
         <div className="section__head" data-anim="heading">

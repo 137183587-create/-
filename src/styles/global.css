@@ -1189,3 +1189,27 @@ a {
     width: 100%;
   }
 }
+
+/* 系统开启“减少动态效果”时：关闭持续循环动画；首屏用 CSS 温和淡入
+   （由渲染管线驱动，结束态强制 opacity:1，绝不会停在隐藏态导致空白） */
+@media (prefers-reduced-motion: reduce) {
+  .hero__bg,
+  .hero__scroll-line,
+  .avatar__ring::after,
+  .contact__bg {
+    animation: none !important;
+  }
+  @keyframes softFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .hero__content,
+  .nav,
+  .hero__scroll {
+    animation: softFadeIn 0.9s ease both;
+  }
+}

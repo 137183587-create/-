@@ -21,13 +21,42 @@ export function useSiteAnimations() {
       '(prefers-reduced-motion: reduce)',
     ).matches
 
-    // 兜底：关闭动效时，直接全部可见（含首屏幕布收起）
+    // 降级（系统开启“减少动态效果”时）：
+    // 首屏温和淡入交由 CSS（prefers-reduced-motion 媒体查询）驱动，避免 JS ticker
+    // 受限时元素卡在隐藏态导致空白；滚动进场仅做轻淡入，且 immediateRender:false
+    // 保证元素初始可见，进入视口才淡入，绝不留下永久隐藏的区块。
     if (prefersReduced) {
       gsap.set('.hero__curtain', { scaleY: 0 })
-      gsap.set(
-        '[data-reveal], [data-anim], .hero__eyebrow, .hero__subtitle, .hero__footer, .hero__title-line',
-        { clearProps: 'all', opacity: 1 },
-      )
+
+      const fade = (target, opts = {}) =>
+        gsap.from(target, {
+          opacity: 0,
+          duration: 0.8,
+          immediateRender: false,
+          scrollTrigger: { trigger: target, start: 'top 92%' },
+          ...opts,
+        })
+
+      gsap.utils.toArray('[data-anim="heading"]').forEach((el) => {
+        const eyebrow = el.querySelector('.section__eyebrow, .contact__eyebrow')
+        const title = el.querySelector('.section__title, .contact__title')
+        if (eyebrow) fade(eyebrow)
+        if (title) fade(title)
+      })
+      gsap.utils.toArray('[data-anim="stagger"]').forEach((group) => {
+        if (!group.children.length) return
+        gsap.from(group.children, {
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.08,
+          immediateRender: false,
+          scrollTrigger: { trigger: group, start: 'top 92%' },
+        })
+      })
+      gsap.utils.toArray('[data-anim="reveal"]').forEach((el) => fade(el))
+      gsap.utils.toArray('[data-reveal]:not([data-anim])').forEach((el) => fade(el))
+
+      ScrollTrigger.refresh()
       return
     }
 
