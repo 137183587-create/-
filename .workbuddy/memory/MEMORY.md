@@ -20,3 +20,18 @@
 
 ## 设计参考
 - 2026-08-25 用户提供 BridgeAI 风格参考图，偏好：全屏沉浸背景 + 居中超大标题 + 底部左右信息带。Hero 已按此版式重构，保留暗色基调。
+
+## 动效架构（GSAP + ScrollTrigger）
+- 中枢：`src/animations/useSiteAnimations.js`（在 App 调用，gsap.context + ScrollTrigger，含 reduced-motion 兜底与 cleanup）。
+- 旧 CSS `[data-reveal]` 淡入已废弃，由 GSAP 接管；不要再给元素加会冲突的内联隐藏。
+- 标记约定（在组件 JSX 上写）：
+  - `data-anim="heading"`：大标题 dramatic 揭幕（clipPath 上揭 + 位移），可标在 `.section__head` 容器或单独的 `.section__title/.contact__title/.section__eyebrow/.contact__eyebrow` 上。
+  - `data-anim="stagger"`：标在容器上，其直接子元素依次 stagger 进场（项目卡、优势卡、联系链接）。
+  - `data-anim="reveal"`：图片/头像 clip 揭幕（如 `.project__media`、`.avatar`）。
+  - `data-anim="parallax"`：滚动轻微视差（scrub）。
+  - `data-reveal`（无 data-anim）：通用上浮进场。
+- Hero 开场时间线：`.hero__curtain` 幕布从上揭开 → 导航下沉 → 标题每行遮罩内上移 + scaleY 压缩归位 → 副标/底栏上浮。标题每行需包 `.hero__title-mask`(overflow hidden) > `.hero__title-line`。
+- 缓动统一 power3/power4.out，慢节奏、无弹性；只动 transform/opacity/clipPath 保性能。
+- React Bits 组件已集成：`Particles`（About 背景）、`SpotlightCard`（精选项目卡，光斑跟随鼠标，金/蓝/暖/玉四色）。
+- 已做移动端响应式适配：汉堡菜单 + 1080/600/380 断点 + 锚点滚动偏移（scroll-padding-top）+ stat 长标签换行保护。
+
