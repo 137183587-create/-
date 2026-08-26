@@ -34,4 +34,5 @@
 - 缓动统一 power3/power4.out，慢节奏、无弹性；只动 transform/opacity/clipPath 保性能。
 - React Bits 组件已集成：`Particles`（About 背景）、`SpotlightCard`（精选项目卡，光斑跟随鼠标，金/蓝/暖/玉四色）。
 - 已做移动端响应式适配：汉堡菜单 + 1080/600/380 断点 + 锚点滚动偏移（scroll-padding-top）+ stat 长标签换行保护。
+- Hero↔About 滚动过渡采用 `.hero__fade-edge` 渐变遮罩 + About 负 margin 重叠 + GSAP scrub 浮现，避免两段内容硬切。
 

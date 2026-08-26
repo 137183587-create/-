@@ -14,6 +14,7 @@ export default function Hero() {
       )}
       <div className="hero__bg" aria-hidden="true" />
       <div className="hero__veil" aria-hidden="true" />
+      <div className="hero__fade-edge" aria-hidden="true" />
 
       <div className="hero__content container">
         <p className="hero__eyebrow">

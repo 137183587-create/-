@@ -55,6 +55,7 @@ export function useSiteAnimations() {
       })
       gsap.utils.toArray('[data-anim="reveal"]').forEach((el) => fade(el))
       gsap.utils.toArray('[data-reveal]:not([data-anim])').forEach((el) => fade(el))
+      fade('.about__grid')
 
       ScrollTrigger.refresh()
       return
@@ -122,6 +123,36 @@ export function useSiteAnimations() {
           },
         })
       }
+
+      /* Hero 整体随滚动进度向上渐隐：作为最上层，下移后显出下层内容，按钮不会被遮挡 */
+      gsap.to('.hero', {
+        opacity: 0,
+        yPercent: -6,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+
+      /* ===================== About 区域缓慢浮现（与 Hero 底边无缝衔接） ===================== */
+      gsap.fromTo(
+        '.about__grid',
+        { y: 52, opacity: 0.22 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.about',
+            start: 'top 88%',
+            end: 'top 42%',
+            scrub: 0.6,
+          },
+        },
+      )
 
       /* ===================== 大标题 dramatic 进场 ===================== */
       const heads = gsap.utils.toArray('[data-anim="heading"]')

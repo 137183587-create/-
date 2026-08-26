@@ -300,6 +300,7 @@ a {
 /* ---------------- HERO ---------------- */
 .hero {
   position: relative;
+  z-index: 5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -350,7 +351,7 @@ a {
 }
 .hero__content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -502,12 +503,30 @@ a {
   left: 50%;
   bottom: 28px;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   color: var(--muted);
+}
+
+/* Hero 底部渐变遮罩：让视频与 About 区域柔和衔接 */
+.hero__fade-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 28vh;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 11, 14, 0) 0%,
+    rgba(10, 11, 14, 0.42) 35%,
+    rgba(10, 11, 14, 0.82) 72%,
+    rgba(10, 11, 14, 1) 100%
+  );
 }
 .hero__scroll-line {
   width: 1px;
@@ -559,6 +578,9 @@ a {
 .about {
   position: relative;
   overflow: hidden;
+  /* 向上与 Hero 底部渐变遮罩重叠，制造无缝衔接 */
+  margin-top: -18vh;
+  padding-top: calc(18vh + clamp(90px, 12vw, 160px));
 }
 .about__particles {
   position: absolute;
@@ -978,6 +1000,13 @@ a {
     align-items: flex-start;
     gap: 28px;
   }
+  .about {
+    margin-top: -14vh;
+    padding-top: calc(14vh + clamp(72px, 12vw, 110px));
+  }
+  .hero__fade-edge {
+    height: 22vh;
+  }
   .about__grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -1082,6 +1111,13 @@ a {
   }
 
   /* About */
+  .about {
+    margin-top: -12vh;
+    padding-top: calc(12vh + clamp(72px, 18vw, 110px));
+  }
+  .hero__fade-edge {
+    height: 18vh;
+  }
   .about__grid {
     gap: 32px;
   }
