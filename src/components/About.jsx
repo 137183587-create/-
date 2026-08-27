@@ -1,9 +1,41 @@
 import { about } from '../data/content'
 import Particles from './Particles'
+import { showToast } from '../utils/toast'
 
 const prefersReduced =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function AboutRow({ label, value }) {
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(value)
+      showToast(`已复制${label} ✓`)
+    } catch {
+      showToast('复制失败，请手动复制')
+    }
+  }
+
+  if (label === '邮箱') {
+    return (
+      <li>
+        <span className="about__contact-label">{label}</span>
+        <a className="about__contact-value" href={`mailto:${value}`}>
+          {value}
+        </a>
+      </li>
+    )
+  }
+  // 微信 / 电话 / 现居：点击复制
+  return (
+    <li>
+      <span className="about__contact-label">{label}</span>
+      <button type="button" className="about__contact-value about__copy" onClick={copy}>
+        {value}
+      </button>
+    </li>
+  )
+}
 
 export default function About() {
   return (
@@ -34,26 +66,18 @@ export default function About() {
         <div className="about__grid">
           <aside className="about__side" data-reveal>
             <div className="avatar" data-anim="reveal">
-              <span className="avatar__mono">{about.monogram}</span>
+              {about.avatar ? (
+                <img className="avatar__img" src={about.avatar} alt="房子翔头像" />
+              ) : (
+                <span className="avatar__mono">{about.monogram}</span>
+              )}
               <span className="avatar__ring" aria-hidden="true" />
             </div>
             <ul className="about__contact">
-              <li>
-                <span className="about__contact-label">微信</span>
-                <span className="about__contact-value">{about.contact.wechat}</span>
-              </li>
-              <li>
-                <span className="about__contact-label">电话</span>
-                <span className="about__contact-value">{about.contact.phone}</span>
-              </li>
-              <li>
-                <span className="about__contact-label">邮箱</span>
-                <span className="about__contact-value">{about.contact.email}</span>
-              </li>
-              <li>
-                <span className="about__contact-label">现居</span>
-                <span className="about__contact-value">{about.contact.location}</span>
-              </li>
+              <AboutRow label="微信" value={about.contact.wechat} />
+              <AboutRow label="电话" value={about.contact.phone} />
+              <AboutRow label="邮箱" value={about.contact.email} />
+              <AboutRow label="现居" value={about.contact.location} />
             </ul>
           </aside>
 

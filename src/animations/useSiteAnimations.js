@@ -62,59 +62,52 @@ export function useSiteAnimations() {
     }
 
     const ctx = gsap.context(() => {
-      /* ===================== 首屏 OPENING ===================== */
-      const heroTl = gsap.timeline({ defaults: { ease: EASE_HERO } })
+      const heroEl = document.querySelector('.hero')
+      const aboutEl = document.querySelector('.about')
 
-      // 1) 幕布从上揭开，露出首屏
-      heroTl.fromTo(
-        '.hero__curtain',
-        { scaleY: 1, transformOrigin: 'top center' },
-        { scaleY: 0, duration: 1.15, ease: 'power3.inOut' },
-        0,
-      )
+      /* ===================== 首屏 OPENING（仅首页 Hero 存在时执行） ===================== */
+      if (heroEl) {
+        const heroTl = gsap.timeline({ defaults: { ease: EASE_HERO } })
 
-      // 2) 导航下沉入场
-      heroTl.from('.nav', { y: -48, opacity: 0, duration: 1.0 }, 0.25)
+        // 1) 幕布从上揭开，露出首屏
+        heroTl.fromTo(
+          '.hero__curtain',
+          { scaleY: 1, transformOrigin: 'top center' },
+          { scaleY: 0, duration: 1.15, ease: 'power3.inOut' },
+          0,
+        )
 
-      // 3) 眉标淡入
-      heroTl.from('.hero__eyebrow', { y: 22, opacity: 0, duration: 0.9 }, 0.55)
+        // 2) 导航下沉入场
+        heroTl.from('.nav', { y: -48, opacity: 0, duration: 1.0 }, 0.25)
 
-      // 4) 标题每行：遮罩内上移 + 压缩(scaleY 0.82)后归位
-      heroTl.from(
-        '.hero__title-line',
-        {
-          yPercent: 120,
-          scaleY: 0.82,
-          transformOrigin: 'bottom center',
-          opacity: 0,
-          duration: 1.4,
-          stagger: 0.14,
-          ease: EASE_HERO,
-        },
-        0.6,
-      )
+        // 3) 眉标淡入
+        heroTl.from('.hero__eyebrow', { y: 22, opacity: 0, duration: 0.9 }, 0.55)
 
-      // 5) 副标题 / 底栏 / 滚动提示依次上浮
-      heroTl
-        .from('.hero__subtitle', { y: 32, opacity: 0, duration: 1.0 }, 1.0)
-        .from('.hero__footer', { y: 46, opacity: 0, duration: 1.1 }, 1.15)
-        .from('.hero__scroll', { opacity: 0, y: 10, duration: 0.8 }, 1.5)
+        // 4) 标题每行：遮罩内上移 + 压缩(scaleY 0.82)后归位
+        heroTl.from(
+          '.hero__title-line',
+          {
+            yPercent: 120,
+            scaleY: 0.82,
+            transformOrigin: 'bottom center',
+            opacity: 0,
+            duration: 1.4,
+            stagger: 0.14,
+            ease: EASE_HERO,
+          },
+          0.6,
+        )
 
-      // 首屏视差：下滚时内容/视频轻微错速
-      gsap.to('.hero__content', {
-        yPercent: 16,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      })
-      if (document.querySelector('.hero__video')) {
-        gsap.to('.hero__video', {
-          yPercent: 10,
-          ease: 'none',
+        // 5) 副标题 / 底栏 / 滚动提示依次上浮
+        heroTl
+          .from('.hero__subtitle', { y: 32, opacity: 0, duration: 1.0 }, 1.0)
+          .from('.hero__footer', { y: 46, opacity: 0, duration: 1.1 }, 1.15)
+          .from('.hero__scroll', { opacity: 0, y: 10, duration: 0.8 }, 1.5)
+
+        /* 首屏滚动退出：内容向上退场 + 视频慢速上移 + Hero 整体淡出。
+           三个效果共用同一个 ScrollTrigger + timeline，减少实例数并保证完全同步。
+           向上退场避免 Hero 文字/按钮向下沉入 About，减少叠化干扰阅读。 */
+        const heroScrollTl = gsap.timeline({
           scrollTrigger: {
             trigger: '.hero',
             start: 'top top',
@@ -122,37 +115,30 @@ export function useSiteAnimations() {
             scrub: true,
           },
         })
+        heroScrollTl
+          .to('.hero__content', { yPercent: -32, ease: 'none' }, 0)
+          .to('.hero__video', { yPercent: -12, ease: 'none' }, 0)
+          .to('.hero', { opacity: 0, ease: 'none' }, 0)
       }
 
-      /* Hero 整体随滚动进度向上渐隐：作为最上层，下移后显出下层内容，按钮不会被遮挡 */
-      gsap.to('.hero', {
-        opacity: 0,
-        yPercent: -6,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      })
-
-      /* ===================== About 区域缓慢浮现（与 Hero 底边无缝衔接） ===================== */
-      gsap.fromTo(
-        '.about__grid',
-        { y: 52, opacity: 0.22 },
-        {
-          y: 0,
-          opacity: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.about',
-            start: 'top 88%',
-            end: 'top 42%',
-            scrub: 0.6,
+      /* ===================== About 区域缓慢浮现（与 Hero 底边无缝衔接，仅首页） ===================== */
+      if (aboutEl) {
+        gsap.fromTo(
+          '.about__grid',
+          { y: 52, opacity: 0.22 },
+          {
+            y: 0,
+            opacity: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.about',
+              start: 'top 88%',
+              end: 'top 42%',
+              scrub: 0.6,
+            },
           },
-        },
-      )
+        )
+      }
 
       /* ===================== 大标题 dramatic 进场 ===================== */
       const heads = gsap.utils.toArray('[data-anim="heading"]')

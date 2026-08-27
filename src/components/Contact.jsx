@@ -1,4 +1,36 @@
 import { contact } from '../data/content'
+import { showToast } from '../utils/toast'
+
+function ContactRow({ label, value }) {
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(value)
+      showToast(`已复制${label} ✓`)
+    } catch {
+      showToast('复制失败，请手动复制')
+    }
+  }
+
+  if (label === '邮箱') {
+    return (
+      <li className="contact__link">
+        <span className="contact__link-label">{label}</span>
+        <a className="contact__link-value" href={`mailto:${value}`}>
+          {value}
+        </a>
+      </li>
+    )
+  }
+  // 微信 / 电话 / 社交：点击复制
+  return (
+    <li className="contact__link">
+      <span className="contact__link-label">{label}</span>
+      <button type="button" className="contact__link-value contact__link-copy" onClick={copy}>
+        {value}
+      </button>
+    </li>
+  )
+}
 
 export default function Contact() {
   return (
@@ -17,10 +49,7 @@ export default function Contact() {
 
         <ul className="contact__links" data-anim="stagger">
           {contact.links.map((l) => (
-            <li className="contact__link" key={l.label}>
-              <span className="contact__link-label">{l.label}</span>
-              <span className="contact__link-value">{l.value}</span>
-            </li>
+            <ContactRow key={l.label} label={l.label} value={l.value} />
           ))}
         </ul>
 

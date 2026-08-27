@@ -32,16 +32,17 @@ export const hero = {
 
 export const about = {
   monogram: '房',
+  avatar: '/avatar.jpg',
   intro: [
     '我是房子翔，一名插画师，也是一个会用 AI 造工具的创作者。',
     '从艺术设计专科自学板绘商业插画入行，在医学可视化公司做过插画与 AI 动画——但比起接单，我更想自由地画点自己相信的东西，比如温暖、安静的治愈系画面。',
     '我不喜欢同质化的套路，也不爱半吊子的流程。对自己感兴趣的领域会一直钻下去，用 AI 把脑子里的想法一个个落地。这个作品集也是其中之一：它会随我一起生长、变形。',
   ],
   contact: {
-    wechat: '（待补充）',
+    wechat: '13370852058',
     phone: '13370852058',
     email: '137183587@qq.com',
-    location: '（待补充）',
+    location: '山东青岛',
   },
   stats: [
     { value: '700+', label: '素材库参考图' },
@@ -100,7 +101,7 @@ export const contact = {
   title: '一起做点东西？',
   sub: '招聘、合作，或者只是想聊聊猫和雨，都欢迎。',
   links: [
-    { label: '微信', value: '（待补充）' },
+    { label: '微信', value: '13370852058' },
     { label: '电话', value: '13370852058' },
     { label: '邮箱', value: '137183587@qq.com' },
     { label: '社交', value: '（待补充）' },

@@ -1,23 +1,20 @@
-import { useSiteAnimations } from './animations/useSiteAnimations'
+import { Routes, Route } from 'react-router-dom'
+import ScrollManager from './components/ScrollManager'
 import Nav from './components/Nav'
-import Hero from './components/Hero'
-import About from './components/About'
-import Projects from './components/Projects'
-import Advantages from './components/Advantages'
-import Contact from './components/Contact'
+import BackToTop from './components/BackToTop'
+import Home from './components/Home'
+import Works from './components/Works'
 
 export default function App() {
-  useSiteAnimations()
   return (
     <>
+      <ScrollManager />
       <Nav />
-      <main>
-        <Hero />
-        <About />
-        <Projects />
-        <Advantages />
-        <Contact />
-      </main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/works" element={<Works />} />
+      </Routes>
+      <BackToTop />
     </>
   )
 }

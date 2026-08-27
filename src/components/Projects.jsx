@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { projects } from '../data/content'
 import SpotlightCard from './SpotlightCard'
 
@@ -19,22 +20,34 @@ export default function Projects() {
 
         <div className="projects__grid" data-anim="stagger">
           {projects.map((p) => (
-            <SpotlightCard
+            <Link
               key={p.title}
-              className={`project ${p.featured ? 'project--featured' : ''} card--${p.card}`}
-              spotlightColor={spotColor[p.card] || 'rgba(201, 169, 106, 0.18)'}
+              to="/works"
+              className="project-link"
+              aria-label={`查看作品：${p.title}`}
             >
-              <div className="project__media" data-anim="reveal">
-                <span className="project__status">{p.status}</span>
-                {p.year !== '—' && <span className="project__year">{p.year}</span>}
-              </div>
-              <div className="project__body">
-                <span className="project__tag">{p.tag}</span>
-                <h3 className="project__title">{p.title}</h3>
-                <p className="project__desc">{p.desc}</p>
-              </div>
-            </SpotlightCard>
+              <SpotlightCard
+                className={`project ${p.featured ? 'project--featured' : ''} card--${p.card}`}
+                spotlightColor={spotColor[p.card] || 'rgba(201, 169, 106, 0.18)'}
+              >
+                <div className="project__media" data-anim="reveal">
+                  <span className="project__status">{p.status}</span>
+                  {p.year !== '—' && <span className="project__year">{p.year}</span>}
+                </div>
+                <div className="project__body">
+                  <span className="project__tag">{p.tag}</span>
+                  <h3 className="project__title">{p.title}</h3>
+                  <p className="project__desc">{p.desc}</p>
+                </div>
+              </SpotlightCard>
+            </Link>
           ))}
+        </div>
+
+        <div className="projects__more" data-reveal>
+          <Link to="/works" className="btn btn--ghost">
+            查看全部作品 →
+          </Link>
         </div>
       </div>
     </section>

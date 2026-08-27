@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { hero, site } from '../data/content'
 
 export default function Hero() {
@@ -45,9 +46,9 @@ export default function Hero() {
               <a href="#contact" className="btn btn--solid">
                 {hero.cta}
               </a>
-              <a href="#projects" className="btn btn--ghost">
+              <Link to="/works" className="btn btn--ghost">
                 {hero.ctaSecondary}
-              </a>
+              </Link>
             </div>
           </div>
 

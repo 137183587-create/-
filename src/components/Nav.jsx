@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { site } from '../data/content'
 
 export default function Nav() {
@@ -26,23 +27,23 @@ export default function Nav() {
     <>
       <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
         <div className="nav__inner">
-          <a href="#hero" className="nav__logo" onClick={close}>
+          <Link to="/" className="nav__logo" onClick={close}>
             <span className="nav__mark">{site.mark}</span>
             <span className="nav__name">{site.name}</span>
-          </a>
+          </Link>
 
           <nav className="nav__links">
             {site.nav.map((n) => (
-              <a key={n.href} href={n.href} className="nav__link">
+              <Link key={n.href} to={`/${n.href}`} className="nav__link">
                 {n.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="nav__actions">
-            <a href="#contact" className="btn btn--ghost nav__cta">
+            <Link to="/#contact" className="btn btn--ghost nav__cta">
               联系
-            </a>
+            </Link>
             <button
               type="button"
               className={`nav__toggle ${open ? 'is-open' : ''}`}
@@ -67,23 +68,23 @@ export default function Nav() {
       >
         <nav className="nav__menu-links">
           {site.nav.map((n) => (
-            <a
+            <Link
               key={n.href}
-              href={n.href}
+              to={`/${n.href}`}
               className="nav__menu-link"
               onClick={close}
             >
               {n.label}
-            </a>
+            </Link>
           ))}
         </nav>
-        <a
-          href="#contact"
+        <Link
+          to="/#contact"
           className="btn btn--solid nav__menu-cta"
           onClick={close}
         >
           联系我
-        </a>
+        </Link>
       </div>
     </>
   )
