@@ -245,8 +245,12 @@ export function useSiteAnimations() {
     const onLoad = () => ScrollTrigger.refresh()
     window.addEventListener('load', onLoad)
 
-    // 资源（字体/图）加载后刷新一次，避免位置计算偏差
+    // 资源（字体/视频/图）加载会改变布局高度，务必在 load 后刷新 Trigger 位置，
+    // 否则 ScrollTrigger 会用旧测量值，导致触发点与真实滚动错位（间歇“卡住/空白”）。
     const raf = requestAnimationFrame(() => ScrollTrigger.refresh())
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh())
+    }
 
     return () => {
       window.removeEventListener('load', onLoad)

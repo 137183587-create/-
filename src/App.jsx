@@ -4,6 +4,8 @@ import Nav from './components/Nav'
 import BackToTop from './components/BackToTop'
 import Home from './components/Home'
 import Works from './components/Works'
+import AiMotionPage from './components/AiMotionPage'
+import ComicsPage from './components/ComicsPage'
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/works" element={<Works />} />
+        <Route path="/ai-motion" element={<AiMotionPage />} />
+        <Route path="/illustrations" element={<ComicsPage />} />
       </Routes>
       <BackToTop />
     </>
