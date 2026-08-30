@@ -43,7 +43,7 @@ function safeRemove(dirPath) {
   }
 }
 
-// 用 git clean 快速清理根目录下的 dist.bak-* 时间戳备份（它们都是 untracked）
+// 清理根目录下的 dist.bak-* 时间戳备份
 function cleanupRootTimestampedBackups() {
   const names = fs
     .readdirSync(root)
@@ -52,17 +52,13 @@ function cleanupRootTimestampedBackups() {
         /^dist\.bak-\d+$/.test(n) &&
         fs.statSync(path.join(root, n)).isDirectory(),
     )
-  if (names.length === 0) return
-  try {
-    execSync(`git clean -fdx ${names.join(' ')}`, {
-      cwd: root,
-      stdio: 'ignore',
-    })
-    for (const name of names) {
+  for (const name of names) {
+    const full = path.join(root, name)
+    if (safeRemove(full)) {
       console.log(`[rotate-dist] 已清理根目录旧备份: ${name}`)
+    } else {
+      console.error(`[rotate-dist] 清理根目录旧备份失败: ${name}`)
     }
-  } catch (err) {
-    console.error('[rotate-dist] 清理根目录旧备份失败:', err.message)
   }
 }
 
@@ -117,32 +113,31 @@ const dist = path.join(root, 'dist')
 const bak = path.join(root, 'dist.bak')
 
 let oldBakMoved = false
-if (fs.existsSync(bak)) {
-  if (!fs.existsSync(trashDir)) {
-    fs.mkdirSync(trashDir, { recursive: true })
-  }
-  const oldBakTrash = path.join(trashDir, `dist.bak-${Date.now()}`)
-  try {
-    fs.renameSync(bak, oldBakTrash)
-    oldBakMoved = true
-    console.log(`[rotate-dist] 旧 dist.bak 移出: ${path.basename(oldBakTrash)}`)
-  } catch (err) {
-    console.log('[rotate-dist] 旧 dist.bak 被锁定，新 dist 将放进 .trash')
-  }
-}
 
 if (fs.existsSync(dist)) {
-  let target
-  if (oldBakMoved) {
-    target = bak
-    fs.renameSync(dist, target)
+  // 若旧 dist.bak 存在，先把它移出（已上锁时才放进 .trash 兜底）
+  let oldBakLocked = false
+  if (fs.existsSync(bak)) {
+    if (!fs.existsSync(trashDir)) fs.mkdirSync(trashDir, { recursive: true })
+    const oldBakTrash = path.join(trashDir, `dist.bak-${Date.now()}`)
+    try {
+      fs.renameSync(bak, oldBakTrash)
+      oldBakMoved = true
+      console.log(`[rotate-dist] 旧 dist.bak 移出: ${path.basename(oldBakTrash)}`)
+    } catch (err) {
+      oldBakLocked = true
+      console.log('[rotate-dist] 旧 dist.bak 被锁定，新 dist 将放进 .trash')
+    }
+  }
+
+  if (oldBakMoved || !oldBakLocked) {
+    // 正常路径：新 dist 接任 dist.bak
+    fs.renameSync(dist, bak)
     console.log('[rotate-dist] dist -> dist.bak')
   } else {
-    // dist.bak 被锁定，无法替换，先把新 dist 放进 .trash 避免污染根目录
-    if (!fs.existsSync(trashDir)) {
-      fs.mkdirSync(trashDir, { recursive: true })
-    }
-    target = path.join(trashDir, `dist.bak-${Date.now()}`)
+    // 兜底：旧 dist.bak 被锁定，先把新 dist 放进 .trash 避免污染根目录
+    if (!fs.existsSync(trashDir)) fs.mkdirSync(trashDir, { recursive: true })
+    const target = path.join(trashDir, `dist.bak-${Date.now()}`)
     fs.renameSync(dist, target)
     console.log(`[rotate-dist] dist -> ${path.basename(target)}`)
   }
@@ -152,17 +147,17 @@ if (fs.existsSync(dist)) {
 cleanupRootTimestampedBackups()
 cleanupViteTimestamps()
 
-// 4. 若旧 dist.bak 已被成功移出且新 dist 已接任，则 .trash 里的旧备份可安全清空。
-//    用 git clean 绕过 safe-delete 大文件回收守卫。
+// 4. 若旧 dist.bak 已被成功移出且新 dist 已接任，则清空 .trash。
+//    逐个 safeRemove 内部条目，避免依赖 git。
 if (oldBakMoved && fs.existsSync(trashDir)) {
-  try {
-    execSync('git clean -fdx .trash', { cwd: root, stdio: 'ignore' })
+  const items = fs.readdirSync(trashDir)
+  let ok = true
+  for (const name of items) {
+    if (!safeRemove(path.join(trashDir, name))) ok = false
+  }
+  if (ok) {
     console.log('[rotate-dist] 已清空 .trash')
-  } catch (err) {
-    console.error('[rotate-dist] 清空 .trash 失败:', err.message)
-    // 兜底：保留 .trash，用户可手动清理
+  } else {
+    console.error('[rotate-dist] 清空 .trash 部分失败，剩余条目下次构建再处理')
   }
 }
-
-// 5. 若之前 dist.bak 被锁定导致 .trash 里已有备份，保留最近 2 份，避免无限增长
-cleanupTrash(2)

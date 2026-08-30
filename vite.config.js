@@ -7,7 +7,15 @@ export default defineConfig({
     host: true,
     port: 5173,
     watch: {
-      ignored: ['node_modules/**', 'dist/**', 'dist.bak/**', 'dist.bak-*/**', '.trash/**'],
+      // _master-media 是未压缩母版，不参与构建，也不需要被 dev server 监听
+      ignored: [
+        'node_modules/**',
+        'dist/**',
+        'dist.bak/**',
+        'dist.bak-*/**',
+        '.trash/**',
+        '_master-media/**',
+      ],
     },
   },
 })

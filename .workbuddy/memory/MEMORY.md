@@ -44,7 +44,9 @@
 
 ## 项目卫生（自动生成文件清理）
 - 2026-08-28 用户要求：约每 5 轮对话粗略扫描项目根目录，不要让自动批量产生的东西堆积。
-- 已知污染源：`dist.bak-*` 时间戳备份、`vite.config.js.timestamp-*.mjs` 临时配置、`.trash/` 回退目录。
+- 2026-08-30 用户要求：开发过程中产生的安装包、备份、临时文件统一放到 `E:\wangzhan\作品集网站开发过程残留备份\`，不要在项目根目录或 `.workbuddy\` 里散放。
+- 已知污染源：`dist.bak-*` 时间戳备份、`vite.config.js.timestamp-*.mjs` 临时配置、`.trash/` 回退目录、压缩/探针/验收脚本。
 - 保留项：`dist.bak/` 作为最新构建备份（便于回滚）。
-- 已配置：`scripts/rotate-dist.mjs` 会在每次 `npm run build` 后自动清理根目录 `dist.bak-*`、Vite 临时文件，并把旧 `dist.bak` 先移到 `.trash` 再用 `git clean` 清空，避免根目录继续堆积。
+- 已配置：`scripts/rotate-dist.mjs` 会在每次 `npm run build` 后自动清理根目录 `dist.bak-*`、Vite 临时文件，并把旧 `dist.bak` 先移到 `.trash` 再逐条 safeRemove 清空，不再依赖 git（新电脑无 git）。
+- 媒体母版（未压缩原片）已整体移出项目到 `E:\wangzhan\作品集网站开发过程残留备份\作品集-母版原片`，项目内 `public/` 只保留压缩后的发布版；`vite.config.js` 忽略 `_master-media/**`。
 
