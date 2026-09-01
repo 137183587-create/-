@@ -823,7 +823,7 @@ a {
   position: relative;
   margin-top: -35vh;
   padding-top: calc(35vh + 110px);
-  padding-bottom: 140px;
+  padding-bottom: 100px;
 }
 .about__magic-bg {
   position: absolute;
@@ -863,11 +863,22 @@ a {
   transform: scale(2.2);
   opacity: 0.35;
 }
-.about__magic-vignette {
+
+/* About 底部柔化过渡：仅在 stats 卡片底部保留轻量压暗，下方黑线区域透明度为 0 */
+.about__fade-edge {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 35%, transparent 0%, rgba(8, 10, 14, 0.72) 70%);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 160px;
+  z-index: 1;
   pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 10, 14, 0) 0%,
+    rgba(8, 10, 14, 0.22) 30%,
+    rgba(8, 10, 14, 0) 70%
+  );
 }
 .about__container {
   position: relative;
@@ -909,6 +920,7 @@ a {
   position: sticky;
   top: 120px;
   align-self: start;
+  transform: rotate(0deg);
 }
 
 /* Avatar */
@@ -921,9 +933,11 @@ a {
   margin-bottom: 32px;
 }
 .avatar--magic {
+  position: relative;
   width: 190px;
   height: 190px;
   margin-bottom: 38px;
+  top: -43px;
 }
 .avatar__mono {
   font-family: var(--font-display);
@@ -964,6 +978,8 @@ a {
   list-style: none;
 }
 .about__contact--magic {
+  margin-top: -20px;
+  width: 295px;
   border: 1px solid rgba(212, 175, 110, 0.22);
   border-radius: 14px;
   background: rgba(12, 16, 26, 0.42);
@@ -1001,7 +1017,7 @@ a {
 
 /* Intro */
 .about__main {
-  padding-top: 6px;
+  padding-top: 0;
 }
 .about__para {
   font-size: clamp(0.95rem, 1.4vw, 1.1rem);
@@ -1297,18 +1313,16 @@ a {
 }
 .ai-motion__card {
   position: relative;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--radius);
   background: var(--surface);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.5s var(--ease), border-color 0.5s var(--ease),
-    box-shadow 0.5s var(--ease);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
 .ai-motion__card:hover {
   transform: translateY(-6px);
-  border-color: var(--line-strong);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
 }
 /* 媒体区统一 16:9，视频或渐变占位 */
@@ -1335,20 +1349,27 @@ a {
   letter-spacing: 0;
 }
 
-/* 首页精选卡片可点击，跳转到 /ai-motion 整页 */
-.ai-motion__link {
+/* 首页精选卡片可点击，直接放大播放视频 */
+.ai-motion__item {
   display: block;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
-.ai-motion__link .ai-motion__card {
-  transition: transform 0.5s var(--ease), border-color 0.5s var(--ease),
-    box-shadow 0.5s var(--ease);
+.ai-motion__item .ai-motion__card {
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
-.ai-motion__link:hover .ai-motion__card {
+.ai-motion__item:hover .ai-motion__card,
+.ai-motion__item:focus-visible .ai-motion__card {
   transform: translateY(-6px);
-  border-color: var(--line-strong);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+}
+.ai-motion__item:focus-visible {
+  outline: none;
+}
+.ai-motion__item:focus-visible .ai-motion__card {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* 精选下方的“查看全部 AI 动画”入口 */
@@ -2440,7 +2461,7 @@ a {
 }
 .ai-tool {
   position: relative;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--radius);
   background: var(--surface);
   padding: 34px 34px 30px;
@@ -2448,32 +2469,12 @@ a {
   flex-direction: column;
   gap: 14px;
   overflow: hidden;
-  transition: transform 0.5s var(--ease), border-color 0.5s var(--ease),
-    box-shadow 0.5s var(--ease);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
-.ai-tool::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-  opacity: 0.5;
-}
-.card--gold.ai-tool::before { background: linear-gradient(90deg, #c9a96a, transparent); }
-.card--blue.ai-tool::before { background: linear-gradient(90deg, #567aa8, transparent); }
-.card--warm.ai-tool::before { background: linear-gradient(90deg, #d68a6e, transparent); }
-.card--jade.ai-tool::before { background: linear-gradient(90deg, #78a88c, transparent); }
 .ai-tool:hover {
   transform: translateY(-6px);
-  border-color: var(--line-strong);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
 }
-.card--gold.ai-tool:hover { border-color: rgba(201, 169, 106, 0.5); }
-.card--blue.ai-tool:hover { border-color: rgba(86, 122, 168, 0.5); }
-.card--warm.ai-tool:hover { border-color: rgba(214, 138, 110, 0.5); }
-.card--jade.ai-tool:hover { border-color: rgba(120, 168, 140, 0.5); }
 .ai-tool__top {
   display: flex;
   justify-content: space-between;

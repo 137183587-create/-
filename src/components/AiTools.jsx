@@ -1,3 +1,5 @@
+import MagicBorder from './MagicBorder'
+
 // 我造的 AI 工具 / Skill：卡片网格，含标签 / 状态 / 可选外链
 export default function AiTools({ items }) {
   return (
@@ -31,6 +33,7 @@ export default function AiTools({ items }) {
                   内部 / 演示中
                 </span>
               )}
+              <MagicBorder overlay />
             </article>
           ))}
         </div>

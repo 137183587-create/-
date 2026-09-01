@@ -37,15 +37,9 @@ export default function About() {
       {/* 星空背景 */}
       <div className="about__magic-bg" aria-hidden="true">
         <div className="about__magic-stars" />
-        <div className="about__magic-vignette" />
       </div>
 
       <div className="container about__container">
-        <div className="about__title-wrap" data-anim="heading">
-          <span className="about__eyebrow">ABOUT</span>
-          <h2 className="about__title">关于我</h2>
-        </div>
-
         <div className="about__grid">
           <aside className="about__side" data-reveal>
             <div className="avatar avatar--magic" data-anim="reveal">
@@ -66,6 +60,10 @@ export default function About() {
           </aside>
 
           <div className="about__main" data-reveal>
+            <div className="about__title-wrap" data-anim="heading">
+              <span className="about__eyebrow">ABOUT</span>
+              <h2 className="about__title">关于我</h2>
+            </div>
             {about.intro.map((p, i) => (
               <p key={i} className={`about__para ${i === 0 ? 'about__para--lead' : ''}`}>
                 {p}
@@ -87,6 +85,8 @@ export default function About() {
           ))}
         </div>
       </div>
+
+      <div className="about__fade-edge" aria-hidden="true" />
     </section>
   )
 }
