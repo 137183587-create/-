@@ -32,39 +32,21 @@ export default function Hero() {
           {hero.subtitle}
         </p>
 
-        <div className="hero__footer">
-          <div className="hero__footer-left">
-            <div className="hero__brand-mini">
-              <span className="hero__brand-mark">{site.mark}</span>
-              <span className="hero__brand-name">{site.name}</span>
-            </div>
-            <p className="hero__note">
-              {hero.footer.note}
-              <span className="hero__note-accent">{hero.footer.noteAccent}</span>
-            </p>
-            <div className="hero__actions">
-              <a href="#contact" className="btn btn--solid">
-                {hero.cta}
-              </a>
-              <Link to="/works" className="btn btn--ghost">
-                {hero.ctaSecondary}
-              </Link>
-            </div>
-          </div>
-
-          <div className="hero__footer-right">
-            <button className="hero__reel" type="button" aria-label="播放作品 reel">
-              <span className="hero__reel-play" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
-              <span className="hero__reel-info">
-                <span className="hero__reel-label">{hero.footer.reelLabel}</span>
-                <span className="hero__reel-duration">{hero.footer.reelDuration}</span>
-              </span>
-            </button>
-          </div>
+        <div className="hero__actions">
+          <a href="#contact" className="hero__btn-magic">
+            <span className="bm__corner bm__corner--tl" />
+            <span className="bm__corner bm__corner--tr" />
+            <span className="bm__corner bm__corner--br" />
+            <span className="bm__corner bm__corner--bl" />
+            <span className="bm__label">{hero.cta}</span>
+          </a>
+          <Link to="/works" className="hero__btn-magic">
+            <span className="bm__corner bm__corner--tl" />
+            <span className="bm__corner bm__corner--tr" />
+            <span className="bm__corner bm__corner--br" />
+            <span className="bm__corner bm__corner--bl" />
+            <span className="bm__label">{hero.ctaSecondary}</span>
+          </Link>
         </div>
       </div>
 

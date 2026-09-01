@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSiteAnimations } from '../animations/useSiteAnimations'
 import { projects } from '../data/content'
 import SpotlightCard from './SpotlightCard'
+import MagicBorder from './MagicBorder'
 
 const spotColor = {
   gold: 'rgba(201, 169, 106, 0.20)',
@@ -109,6 +110,24 @@ export default function Works() {
                   spotlightColor={spotColor[p.card] || 'rgba(201, 169, 106, 0.18)'}
                 >
                   <div className="work-card__media">
+                    {p.media && (
+                      <>
+                        {p.media.endsWith('.mp4') ? (
+                          <video
+                            className="work-card__video"
+                            src={p.media}
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                            autoPlay
+                          />
+                        ) : (
+                          <img className="work-card__img" src={p.media} alt="" loading="lazy" />
+                        )}
+                        <div className="work-card__media-overlay" />
+                      </>
+                    )}
                     <span className="work-card__status">{p.status}</span>
                     {p.year !== '—' && <span className="work-card__year">{p.year}</span>}
                   </div>
@@ -117,6 +136,7 @@ export default function Works() {
                     <h3 className="work-card__title">{p.title}</h3>
                     <p className="work-card__desc">{p.desc}</p>
                   </div>
+                  <MagicBorder overlay />
                 </SpotlightCard>
               </div>
             ))}

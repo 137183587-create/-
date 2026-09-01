@@ -27,11 +27,6 @@ export default function Nav() {
     <>
       <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
         <div className="nav__inner">
-          <Link to="/" className="nav__logo" onClick={close}>
-            <span className="nav__mark">{site.mark}</span>
-            <span className="nav__name">{site.name}</span>
-          </Link>
-
           <nav className="nav__links">
             {site.nav.map((n) => (
               <Link key={n.href} to={`/${n.href}`} className="nav__link">

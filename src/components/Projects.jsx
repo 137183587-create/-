@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { projects } from '../data/content'
 import SpotlightCard from './SpotlightCard'
+import MagicBorder from './MagicBorder'
 
 const spotColor = {
   gold: 'rgba(201, 169, 106, 0.20)',
@@ -22,7 +23,7 @@ export default function Projects() {
           {projects.map((p) => (
             <Link
               key={p.title}
-              to="/works"
+              to={p.link || '/works'}
               className="project-link"
               aria-label={`查看作品：${p.title}`}
             >
@@ -31,6 +32,24 @@ export default function Projects() {
                 spotlightColor={spotColor[p.card] || 'rgba(201, 169, 106, 0.18)'}
               >
                 <div className="project__media" data-anim="reveal">
+                  {p.media && (
+                    <>
+                      {p.media.endsWith('.mp4') ? (
+                        <video
+                          className="project__video"
+                          src={p.media}
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          autoPlay
+                        />
+                      ) : (
+                        <img className="project__img" src={p.media} alt="" loading="lazy" />
+                      )}
+                      <div className="project__media-overlay" />
+                    </>
+                  )}
                   <span className="project__status">{p.status}</span>
                   {p.year !== '—' && <span className="project__year">{p.year}</span>}
                 </div>
@@ -39,6 +58,7 @@ export default function Projects() {
                   <h3 className="project__title">{p.title}</h3>
                   <p className="project__desc">{p.desc}</p>
                 </div>
+                <MagicBorder overlay />
               </SpotlightCard>
             </Link>
           ))}

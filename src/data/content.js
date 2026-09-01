@@ -21,7 +21,7 @@ export const site = {
 
 export const hero = {
   eyebrow: 'PORTFOLIO · 2026',
-  title: ['房子翔', '插画师 &', 'AI 视觉创作者'],
+  title: ['房子翔', '插画师 & AI 视觉创作者'],
   subtitle: '用兴趣驱动创作，让作品集也会生长。',
   cta: '联系我',
   ctaSecondary: '查看作品',
@@ -57,6 +57,16 @@ export const about = {
 
 export const projects = [
   {
+    title: '医学可视化插画 & AI 动画',
+    tag: '商业项目',
+    year: '2024',
+    status: '保密',
+    card: 'blue',
+    link: '/medical-visualization',
+    media: '/ai-motion/沙画开头.mp4',
+    desc: '在企业项目中负责医学类插画与 AI 动画设计（部分内容受保密限制，仅展示脱敏片段）。',
+  },
+  {
     title: '手作素材库',
     tag: '自研工具 · 2025',
     year: '2025',
@@ -66,28 +76,12 @@ export const projects = [
     desc: '用 trae 开发的本地素材库，按颜色与款式检索 700+ 张编绳 / 玉石平安扣参考图；另有微信小程序版在测试中。',
   },
   {
-    title: '医学可视化插画 & AI 动画',
-    tag: '商业项目',
-    year: '2024',
-    status: '保密',
-    card: 'blue',
-    desc: '在企业项目中负责医学类插画与 AI 动画设计（部分内容受保密限制，仅展示脱敏片段）。',
-  },
-  {
     title: '治愈系插画',
     tag: '自由创作 · 构思中',
     year: '2026',
     status: '进行中',
     card: 'warm',
     desc: '想画下雨天窝在窗边的小猫那样安静温暖的画面。正在动手，慢慢填进这里。',
-  },
-  {
-    title: '编绳手作 · 玉石平安扣',
-    tag: '个人兴趣',
-    year: '—',
-    status: '个人',
-    card: 'jade',
-    desc: '用股线、玉线编绳，搭配平安扣与各类珠子，做手机挂件、钥匙扣。是素材库的灵感来源。',
   },
 ]
 
