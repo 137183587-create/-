@@ -224,6 +224,15 @@ export const aiMotion = [
     desc: '骨质疏松的风险与补钙逻辑动画科普。',
     media: '/ai-motion/骨质疏松.mp4',
   },
+  {
+    title: 'AI 陇原针灸大家 · 皇甫谧',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2024',
+    status: '可演示',
+    card: 'jade',
+    desc: '3 分钟讲述皇甫谧与《针灸甲乙经》的 AI 动画，把针灸典籍的来龙去脉讲成故事。',
+    media: '/ai-motion/huangfumi-acupuncture.mp4',
+  },
 ]
 
 // 公众号医学科普条漫：图片放在 public/images/comics/（长图）与 covers/（封面）
