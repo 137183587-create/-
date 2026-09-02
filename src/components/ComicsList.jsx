@@ -85,7 +85,7 @@ export default function ComicsList({ className = '' }) {
                       className="comic-item__img"
                       src={imageSrc}
                       alt={item.title}
-                      loading="lazy"
+                      loading={i < 1 ? 'eager' : 'lazy'}
                     />
                     <div className="comic-item__img-overlay" />
                     <span className="comic-item__hint">点击展开</span>

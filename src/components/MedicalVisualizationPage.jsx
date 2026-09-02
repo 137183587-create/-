@@ -13,66 +13,48 @@ export default function MedicalVisualizationPage() {
   return (
     <main className="works-page medical-visualization-page">
       {/* ---------------- Hero ---------------- */}
-      <section className="comics-hero">
-        <div className="comics-hero__bg">
-          {featured?.cover ? (
-            <img
-              className="comics-hero__bg-img"
-              src={featured.cover}
-              alt=""
-              loading="eager"
-            />
-          ) : (
-            <img
-              className="comics-hero__bg-img"
-              src={featured?.images?.[0]}
-              alt=""
-              loading="eager"
-            />
-          )}
-          <div className="comics-hero__bg-overlay" />
-        </div>
+      <section className="hero page-hero">
+        <div className="hero__bg" aria-hidden="true" />
+        <div className="hero__veil" aria-hidden="true" />
+        <div className="hero__fade-edge" aria-hidden="true" />
 
-        <div className="container comics-hero__inner">
-          <div className="comics-hero__text">
-            <Link to="/" className="comics-hero__back">
-              <span aria-hidden="true">←</span> 返回首页
-            </Link>
-            <span className="comics-hero__eyebrow" data-anim="heading">
-              MEDICAL VISUALIZATION
+        <div className="hero__content container">
+          <p className="hero__eyebrow" data-anim="heading">
+            MEDICAL VISUALIZATION
+          </p>
+          <h1 className="hero__title" data-anim="heading">
+            <span className="hero__title-mask">
+              <span className="hero__title-line hero__title-line--large">
+                长图插画 & AI 辅助手绘修改
+              </span>
             </span>
-            <h1 className="comics-hero__title" data-anim="heading">
-              <span>医学可视化</span>
-              <span>插画 & AI 动画</span>
-            </h1>
-            <p className="comics-hero__sub" data-reveal>
-              在企业项目中负责医学类插画与 AI 动画设计。
-              <br />
-              部分内容受保密限制，仅展示脱敏片段。
-            </p>
-            <div className="comics-hero__actions" data-reveal>
-              <Link to="/#contact" className="hero__btn-magic">
-                <span className="bm__corner bm__corner--tl" />
-                <span className="bm__corner bm__corner--tr" />
-                <span className="bm__corner bm__corner--br" />
-                <span className="bm__corner bm__corner--bl" />
-                <span className="bm__label">联系我</span>
-              </Link>
-              <Link to="/#projects" className="hero__btn-magic">
-                <span className="bm__corner bm__corner--tl" />
-                <span className="bm__corner bm__corner--tr" />
-                <span className="bm__corner bm__corner--br" />
-                <span className="bm__corner bm__corner--bl" />
-                <span className="bm__label">返回精选</span>
-              </Link>
-            </div>
+          </h1>
+          <p className="hero__subtitle" data-reveal>
+            在企业项目中负责医学类插画与 AI 动画设计。
+            <br />
+            部分内容受保密限制，仅展示脱敏片段。
+          </p>
+          <div className="hero__actions" data-reveal>
+            <Link to="/#contact" className="hero__btn-magic">
+              <span className="bm__corner bm__corner--tl" />
+              <span className="bm__corner bm__corner--tr" />
+              <span className="bm__corner bm__corner--br" />
+              <span className="bm__corner bm__corner--bl" />
+              <span className="bm__label">联系我</span>
+            </Link>
+            <Link to="/#projects" className="hero__btn-magic">
+              <span className="bm__corner bm__corner--tl" />
+              <span className="bm__corner bm__corner--tr" />
+              <span className="bm__corner bm__corner--br" />
+              <span className="bm__corner bm__corner--bl" />
+              <span className="bm__label">返回精选</span>
+            </Link>
           </div>
         </div>
-        <div className="works-hero__glow" aria-hidden="true" />
       </section>
 
       {/* ---------------- AI 动画 ---------------- */}
-      <section className="medical-section medical-section--motion">
+      <section id="motion" className="medical-section medical-section--motion">
         <div className="container">
           <div className="section__head medical-section__head" data-anim="heading">
             <span className="section__eyebrow">AI MOTION</span>
@@ -86,7 +68,7 @@ export default function MedicalVisualizationPage() {
       </section>
 
       {/* ---------------- 医学插画 ---------------- */}
-      <section className="medical-section medical-section--comics">
+      <section id="comics" className="medical-section medical-section--comics">
         <div className="container">
           <div className="section__head medical-section__head" data-anim="heading">
             <span className="section__eyebrow">MEDICAL ILLUSTRATION</span>

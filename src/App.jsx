@@ -1,12 +1,10 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import ScrollManager from './components/ScrollManager'
 import Nav from './components/Nav'
 import BackToTop from './components/BackToTop'
 import MagicBackground from './components/MagicBackground'
 import Home from './components/Home'
 import Works from './components/Works'
-import AiMotionPage from './components/AiMotionPage'
-import ComicsPage from './components/ComicsPage'
 import MedicalVisualizationPage from './components/MedicalVisualizationPage'
 
 export default function App() {
@@ -18,9 +16,15 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/works" element={<Works />} />
-        <Route path="/ai-motion" element={<AiMotionPage />} />
-        <Route path="/illustrations" element={<ComicsPage />} />
         <Route path="/medical-visualization" element={<MedicalVisualizationPage />} />
+        <Route
+          path="/ai-motion"
+          element={<Navigate to="/medical-visualization#motion" replace />}
+        />
+        <Route
+          path="/illustrations"
+          element={<Navigate to="/medical-visualization#comics" replace />}
+        />
       </Routes>
       <BackToTop />
     </>
