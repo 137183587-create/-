@@ -160,7 +160,9 @@ export default function About() {
             <span className="about__frame about__frame--corner" aria-hidden="true" />
             <span className="about__frame about__frame--star" aria-hidden="true">✦</span>
             <div className="about__title-wrap" data-anim="heading">
-              <h2 className="about__title">我是房子翔<span className="about__title-star" aria-hidden="true">✦</span></h2>
+              <h2 className="about__title">
+                关于我<span className="about__title-star" aria-hidden="true">✦</span>
+              </h2>
               <span className="about__title-line" aria-hidden="true">
                 <i className="about__title-line-dot" />
               </span>

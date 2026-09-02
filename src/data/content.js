@@ -362,12 +362,36 @@ export const aiTools = [
 ]
 
 export const advantages = [
-  { title: '板绘商业插画', desc: '从报班自学到商业落地，能接住"要好看也要能用"的需求。' },
-  { title: 'AI 动画设计', desc: '熟悉医学可视化等方向的 AI 动画流程。' },
-  { title: '用 AI 造工具', desc: '不只会用 AI，还会用 trae 自己写网页 / 小程序，把想法变成能跑的产品。' },
-  { title: '编绳手作', desc: '把兴趣做成实物，也做成可检索的素材系统。' },
-  { title: '兴趣驱动学习', desc: '踏入陌生领域 → 自己做出东西 → 正反馈循环，学得快也学得深。' },
-  { title: '克制与审美', desc: '反感烂大街同质化，要干净、高级、有自己脾气。' },
+  {
+    key: 'star-bottle',
+    symbol: '星图瓶',
+    title: '用 AI 造工具',
+    desc: '不只会用 AI，还会用 trae 自己写网页 / 小程序，把想法酿成可运行的药剂。',
+  },
+  {
+    key: 'compass',
+    symbol: '占星罗盘',
+    title: 'AI 动画设计',
+    desc: '熟悉医学可视化等方向的 AI 动画流程，能指引概念从静帧走向运动。',
+  },
+  {
+    key: 'crystal',
+    symbol: '魔力水晶',
+    title: '兴趣驱动学习',
+    desc: '踏入陌生领域 → 自己做出东西 → 正反馈循环，学得快也学得深。',
+  },
+  {
+    key: 'spellbook',
+    symbol: '咒语书',
+    title: '板绘商业插画',
+    desc: '从报班自学到商业落地，能接住"要好看也要能用"的需求。',
+  },
+  {
+    key: 'wand',
+    symbol: '魔杖',
+    title: '编绳手作',
+    desc: '把兴趣做成实物，也做成可检索的素材系统，双手能创造就不只是想象。',
+  },
 ]
 
 export const contact = {

@@ -1,10 +1,26 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { site } from '../data/content'
+import BubbleMenu from './BubbleMenu'
+
+// 顶部导航的主色调：暗玻璃 + 金色
+const BUBBLE_BG = 'rgba(10, 11, 14, 0.82)'
+const BUBBLE_COLOR = '#f6e6b8'
+
+// 为每个菜单项生成 hover 配色（金色渐变 + 单点彩色点缀）
+const hoverPalette = [
+  { bgColor: '#d4af6e', textColor: '#0a0b0e' }, // 金
+  { bgColor: '#e4c893', textColor: '#0a0b0e' }, // 浅金
+  { bgColor: '#b89456', textColor: '#ffffff' }, // 古铜
+  { bgColor: '#d4af6e', textColor: '#0a0b0e' },
+  { bgColor: '#e4c893', textColor: '#0a0b0e' },
+  { bgColor: '#b89456', textColor: '#ffffff' },
+  { bgColor: '#d4af6e', textColor: '#0a0b0e' },
+  { bgColor: '#e4c893', textColor: '#0a0b0e' }
+]
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -13,74 +29,53 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // 菜单打开时锁定页面滚动，关闭时还原
+  // 菜单展开时锁定页面滚动
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [open])
+  }, [menuOpen])
 
-  const close = () => setOpen(false)
+  // 将 site.nav 映射成 BubbleMenu 的 items
+  const items = site.nav.map((n, i) => ({
+    label: n.label,
+    href: `/${n.href}`,
+    ariaLabel: n.label,
+    rotation: i % 2 === 0 ? -4 : 4,
+    hoverStyles: hoverPalette[i % hoverPalette.length]
+  }))
+
+  const logo = (
+    <>
+      <span className="bubble-menu__mark">{site.mark}</span>
+      <span className="bubble-menu__name">{site.name}</span>
+    </>
+  )
 
   return (
     <>
-      <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
-        <div className="nav__inner">
-          <nav className="nav__links">
-            {site.nav.map((n) => (
-              <Link key={n.href} to={`/${n.href}`} className="nav__link">
-                {n.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="nav__actions">
-            <Link to="/#contact" className="btn btn--ghost nav__cta">
-              联系
-            </Link>
-            <button
-              type="button"
-              className={`nav__toggle ${open ? 'is-open' : ''}`}
-              aria-label={open ? '关闭菜单' : '打开菜单'}
-              aria-expanded={open}
-              aria-controls="nav-menu"
-              onClick={() => setOpen((o) => !o)}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* 移动端全屏菜单：独立于 header，避免 nav 的 backdrop-filter 截断 fixed 全屏 */}
+      {/* 气泡冒出时同步出现的背景模糊遮罩：点击空白处可关闭菜单 */}
       <div
-        id="nav-menu"
-        className={`nav__menu ${open ? 'is-open' : ''}`}
-        aria-hidden={!open}
-      >
-        <nav className="nav__menu-links">
-          {site.nav.map((n) => (
-            <Link
-              key={n.href}
-              to={`/${n.href}`}
-              className="nav__menu-link"
-              onClick={close}
-            >
-              {n.label}
-            </Link>
-          ))}
-        </nav>
-        <Link
-          to="/#contact"
-          className="btn btn--solid nav__menu-cta"
-          onClick={close}
-        >
-          联系我
-        </Link>
-      </div>
+        className={`nav__scrim ${menuOpen ? 'is-open' : ''}`}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden="true"
+      />
+      <BubbleMenu
+        open={menuOpen}
+        logo={logo}
+        items={items}
+        onMenuClick={setMenuOpen}
+        menuAriaLabel={menuOpen ? '关闭菜单' : '打开菜单'}
+        menuBg={BUBBLE_BG}
+        menuContentColor={BUBBLE_COLOR}
+        useFixedPosition={true}
+        animationEase="back.out(1.5)"
+        animationDuration={0.55}
+        staggerDelay={0.09}
+        className={`site-nav ${scrolled ? 'site-nav--scrolled' : ''}`}
+        style={{ top: 18 }}
+      />
     </>
   )
 }
