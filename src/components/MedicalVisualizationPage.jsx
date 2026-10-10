@@ -1,14 +1,36 @@
 import { Link } from 'react-router-dom'
+import { useMemo, useState } from 'react'
 import { useSiteAnimations } from '../animations/useSiteAnimations'
 import { aiMotion, comics } from '../data/content'
-import AiMotionCarousel from './AiMotionCarousel'
+import MasonryCards from './MasonryCards'
 import ComicsList from './ComicsList'
+import VideoPlayer from './VideoPlayer'
 
-// 医学可视化插画 & AI 动画 聚合页面
+// 医学可视化插画& AI 动画 聚合页面
 export default function MedicalVisualizationPage() {
   useSiteAnimations()
 
   const featured = comics[0]
+
+  // InfiniteGallery 需要 {url,title,alt,subtitle}；用视频抽帧缩略图作画廊图像
+  // media 形如 /ai-motion/xxx.mp4 → 缩略图 /ai-motion/thumbs/xxx.webp
+  const galleryImages = useMemo(
+    () =>
+      aiMotion
+        .filter((m) => m.media)
+        .map((m) => ({
+          url: m.media.replace('/ai-motion/', '/ai-motion/thumbs/').replace(/\.mp4$/i, '.webp'),
+          title: m.title,
+          alt: m.title,
+          subtitle: m.tag,
+          media: m.media,
+        })),
+    [],
+  )
+
+  const [player, setPlayer] = useState({ open: false, index: 0 })
+  const openPlayer = (index) => setPlayer({ open: true, index })
+  const closePlayer = () => setPlayer((p) => ({ ...p, open: false }))
 
   return (
     <main className="works-page medical-visualization-page">
@@ -53,18 +75,39 @@ export default function MedicalVisualizationPage() {
         </div>
       </section>
 
-      {/* ---------------- AI 动画 ---------------- */}
+      {/* ---------------- AI 动画：两列瀑布流 -----------------
+          参考设计稿的错落卡片墙，纯 CSS columns 实现、不劫持滚动。
+          原 3D 无限图像场 InfiniteGallery 已存档至 src/components/_archive/。 */}
       <section id="motion" className="medical-section medical-section--motion">
         <div className="container">
           <div className="section__head medical-section__head" data-anim="heading">
             <span className="section__eyebrow">AI MOTION</span>
             <h2 className="section__title">AI 动画</h2>
             <p className="medical-section__desc">
-              医学可视化、科普短片、片头动画——滚动鼠标或点击两侧箭头切换，点击播放。
+              医学可视化、科普短片、片头动画——两列错落铺陈，点击任意一张放大查看。
             </p>
           </div>
+
+          <MasonryCards
+            images={galleryImages}
+            columns={2}
+            gap={18}
+            radius={14}
+            showLabel
+            allowFocusOnClick
+            onPlay={(item) => {
+              const i = aiMotion.findIndex((m) => m.media === item.media)
+              if (i >= 0) openPlayer(i)
+            }}
+          />
         </div>
-        <AiMotionCarousel items={aiMotion} />
+
+        <VideoPlayer
+          src={aiMotion[player.index]?.media}
+          title={aiMotion[player.index]?.title}
+          isOpen={player.open}
+          onClose={closePlayer}
+        />
       </section>
 
       {/* ---------------- 医学插画 ---------------- */}

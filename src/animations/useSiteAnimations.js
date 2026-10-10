@@ -9,11 +9,18 @@ const EASE = 'power3.out'
 const EASE_HERO = 'power4.out'
 const EASE_SMOOTH = 'power2.out'
 
+// 可逆 / 重播：向下进入视口→播放；向上划出视口→反向还原；
+// 再次向下划入→重新播放。满足“再次划过页面时动效再次出现”。
+const REPLAY = 'play none none reverse'
+
 /**
  * 全站动效中枢：
  * - 首屏 opening：幕布揭开 + 标题遮罩/位移/压缩归位 + 导航/副标/底栏依次进场
  * - 滚动进场：大标题 dramatic 揭幕，卡片 stagger，图片 reveal/clip，轻微 parallax
  * 仅在 transform/opacity/clipPath 上做动画，保证性能；尊重 reduced-motion。
+ *
+ * 所有进场动效均使用 REPLAY（play none none reverse），因此划走再划回会重新出现，
+ * 且向上划出时反向还原到“未进场”状态，是可逆的。
  */
 export function useSiteAnimations() {
   useLayoutEffect(() => {
@@ -25,6 +32,7 @@ export function useSiteAnimations() {
     // 首屏温和淡入交由 CSS（prefers-reduced-motion 媒体查询）驱动，避免 JS ticker
     // 受限时元素卡在隐藏态导致空白；滚动进场仅做轻淡入，且 immediateRender:false
     // 保证元素初始可见，进入视口才淡入，绝不留下永久隐藏的区块。
+    // 同样使用 REPLAY，让降级动效在二次划过时重新淡入。
     if (prefersReduced) {
       gsap.set('.hero__curtain', { scaleY: 0 })
 
@@ -33,7 +41,11 @@ export function useSiteAnimations() {
           opacity: 0,
           duration: 0.8,
           immediateRender: false,
-          scrollTrigger: { trigger: target, start: 'top 92%' },
+          scrollTrigger: {
+            trigger: target,
+            start: 'top 92%',
+            toggleActions: REPLAY,
+          },
           ...opts,
         })
 
@@ -50,10 +62,16 @@ export function useSiteAnimations() {
           duration: 0.8,
           stagger: 0.08,
           immediateRender: false,
-          scrollTrigger: { trigger: group, start: 'top 92%' },
+          scrollTrigger: {
+            trigger: group,
+            start: 'top 92%',
+            toggleActions: REPLAY,
+          },
         })
       })
       gsap.utils.toArray('[data-anim="reveal"]').forEach((el) => fade(el))
+      // 随滚动淡出：降级下不做 scrub，直接保持完全可见（保证内容不丢失）
+      gsap.utils.toArray('[data-anim="scroll-fade"]').forEach((el) => gsap.set(el, { opacity: 1, y: 0 }))
       gsap.utils.toArray('[data-reveal]:not([data-anim])').forEach((el) => fade(el))
       fade('.about__grid')
 
@@ -144,7 +162,11 @@ export function useSiteAnimations() {
       const heads = gsap.utils.toArray('[data-anim="heading"]')
       heads.forEach((el) => {
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: el, start: 'top 82%' },
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 82%',
+            toggleActions: REPLAY,
+          },
         })
         if (el.matches('.section__title, .contact__title')) {
           tl.from(el, {
@@ -179,7 +201,7 @@ export function useSiteAnimations() {
         }
       })
 
-      /* ===================== 卡片 stagger ===================== */
+      /* ===================== 卡片 stagger（可逆 / 重播） ===================== */
       gsap.utils.toArray('[data-anim="stagger"]').forEach((group) => {
         const items = group.children
         if (!items.length) return
@@ -190,11 +212,15 @@ export function useSiteAnimations() {
           duration: 1.15,
           ease: EASE,
           stagger: 0.13,
-          scrollTrigger: { trigger: group, start: 'top 82%' },
+          scrollTrigger: {
+            trigger: group,
+            start: 'top 82%',
+            toggleActions: REPLAY,
+          },
         })
       })
 
-      /* ===================== 图片 reveal / clip 揭幕 ===================== */
+      /* ===================== 图片 reveal / clip 揭幕（可逆 / 重播） ===================== */
       gsap.utils.toArray('[data-anim="reveal"]').forEach((el) => {
         gsap.fromTo(
           el,
@@ -205,24 +231,55 @@ export function useSiteAnimations() {
             opacity: 1,
             duration: 1.35,
             ease: EASE,
-            scrollTrigger: { trigger: el, start: 'top 86%' },
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 86%',
+              toggleActions: REPLAY,
+            },
           },
         )
       })
 
-      /* ===================== 通用上浮进场 ===================== */
+      /* ===================== 通用上浮进场（可逆 / 重播） ===================== */
       gsap.utils.toArray('[data-reveal]:not([data-anim])').forEach((el) => {
         gsap.from(el, {
           y: 42,
           opacity: 0,
           duration: 1.0,
           ease: EASE_SMOOTH,
-          scrollTrigger: { trigger: el, start: 'top 88%' },
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: REPLAY,
+          },
         })
       })
 
-      /* ===================== 轻微 parallax ===================== */
-      gsap.utils.toArray('[data-anim="parallax"]').forEach((el) => {
+      /* ===================== 随滚动淡出（scrub 类，用于全屏沉浸区块的叠层文字） =====================
+         元素在区块顶部对齐视口时完全可见，随该区块整体上移淡出并微升。
+         属 scrub 连续型，本身可逆（滚回去会重新出现），不需要 REPLAY。
+         ⚠️ 坑：区块高度恰为 100vh 时 `start:'top top'` 与 `end:'bottom bottom'`
+         解析到**同一个滚动位置** → 触发器长度为 0，状态随机。必须用 'bottom top'。 */
+      gsap.utils.toArray('[data-anim="scroll-fade"]').forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 1, y: 0 },
+          {
+            opacity: 0,
+            y: -70,
+            ease: 'none',
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: el.closest('section') || el,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
+            },
+          },
+        )
+      })
+
+      /* ===================== 轻微 parallax（随滚动连续，本就可逆，不动） ===================== */      gsap.utils.toArray('[data-anim="parallax"]').forEach((el) => {
         gsap.fromTo(
           el,
           { yPercent: -7 },

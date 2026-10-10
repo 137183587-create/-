@@ -26,7 +26,7 @@ export const hero = {
   cta: '联系我',
   ctaSecondary: '查看作品',
   footer: {
-    note: '目前正在探索 AI 视觉与治愈系插画方向，',
+    note: '目前正在深耕 AI 视觉与 AI 动画方向，',
     noteAccent: '持续生长中。',
     reelLabel: '作品 reel',
     reelDuration: '0:00',
@@ -35,11 +35,11 @@ export const hero = {
 
 export const about = {
   monogram: '房',
-  avatar: '/avatar.jpg',
+  avatar: '/avatar.webp',
   intro: [
     '一名插画师，也是一个会用 AI 造工具的创作者，',
     '从艺术设计专科自学板绘商业插画入行，在医学可视化公司做过插画与 AI 动画',
-    '但比起接单，我更想自由地画点自己相信的东西，比如温暖，安静的治愈系画面，',
+    '但比起接单，我更想自由地用 AI 把脑子里的画面一个个做出来，',
     '我不喜欢同质化的套路，也不爱半吊子的流程，对自己感兴趣的领域会一直钻下去，用 AI 把脑子里的想法一个个落地，',
     '这个作品集也是其中之一：它会随我一起生长，变形，',
   ],
@@ -75,28 +75,38 @@ export const projects = [
     status: '可演示',
     card: 'gold',
     featured: true,
-    desc: '用 trae 开发的本地素材库，按颜色与款式检索 700+ 张编绳 / 玉石平安扣参考图；另有微信小程序版在测试中。',
-  },
-  {
-    title: '治愈系插画',
-    tag: '自由创作 · 构思中',
-    year: '2026',
-    status: '进行中',
-    card: 'warm',
-    desc: '想画下雨天窝在窗边的小猫那样安静温暖的画面。正在动手，慢慢填进这里。',
+    desc: '用 trae 自研的本地检索工具，按颜色与款式智能召回 700+ 张参考图；另有微信小程序版在测试中。',
   },
 ]
 
 // 视频统一放在 public/ai-motion/，新增动画直接加一条并填 media 即可
 export const aiMotion = [
   {
-    title: 'AI 影像科',
+    title: '麻醉科 & 肝胆外科',
     tag: 'AI 动画 · 医学可视化',
     year: '2024',
     status: '可演示',
     card: 'gold',
-    desc: '用 AI 把影像科的检查流程做成可视化动画，让读片与就诊路径一目了然。',
-    media: '/ai-motion/AI影像科.mp4',
+    desc: '用 AI 把麻醉科与肝胆外科的手术流程做成可视化动画，让复杂的术中配合一目了然。',
+    media: '/ai-motion/麻醉科和肝胆外科.mp4',
+  },
+  {
+    title: '贵州眼科 · 眼外伤护理',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2024',
+    status: '可演示',
+    card: 'jade',
+    desc: '眼外伤护理流程的动画演示（含真人数字人讲解），把急性期处理与康复要点讲清楚。',
+    media: '/ai-motion/贵州眼科护理眼外伤.mp4',
+  },
+  {
+    title: '产后抑郁科普',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2024',
+    status: '可演示',
+    card: 'warm',
+    desc: '用动画拆解产后抑郁的情绪表现与干预路径，让照护者更早识别、也更容易理解。',
+    media: '/ai-motion/产后抑郁.mp4',
   },
   {
     title: 'PICC 置管护理',
@@ -106,24 +116,6 @@ export const aiMotion = [
     card: 'blue',
     desc: 'PICC 导管维护要点动态演示，把护理步骤讲清楚、看得懂。',
     media: '/ai-motion/PICC.mp4',
-  },
-  {
-    title: '减肥药剂科普',
-    tag: 'AI 动画 · 医学可视化',
-    year: '2024',
-    status: '可演示',
-    card: 'warm',
-    desc: '以动画拆解减肥药剂的作用机制，把复杂药理讲成人话。',
-    media: '/ai-motion/减肥药剂.mp4',
-  },
-  {
-    title: '多重耐药菌',
-    tag: 'AI 动画 · 医学可视化',
-    year: '2024',
-    status: '可演示',
-    card: 'jade',
-    desc: '多重耐药菌的传播与防控可视化，科普院感管理的重点。',
-    media: '/ai-motion/多重耐药菌.mp4',
   },
   {
     title: '妊娠期高血压',
@@ -233,6 +225,24 @@ export const aiMotion = [
     desc: '3 分钟讲述皇甫谧与《针灸甲乙经》的 AI 动画，把针灸典籍的来龙去脉讲成故事。',
     media: '/ai-motion/huangfumi-acupuncture.mp4',
   },
+  {
+    title: 'AI 说医解药 · 推荐选题「太行黄芪」',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2025',
+    status: '可演示',
+    card: 'warm',
+    desc: '以"说医解药"系列推荐太行黄芪道地药材，用 AI 动画讲清道地药材的种植与功效。',
+    media: '/ai-motion/AI说医解药，推荐选题太行黄芪.mp4',
+  },
+  {
+    title: 'AI 老年人多重用药科普',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2025',
+    status: '可演示',
+    card: 'amber',
+    desc: '针对老年人常见的多重用药问题，用 AI 动画讲清药物相互作用与安全用药要点。',
+    media: '/ai-motion/AI老年人多重用药3min（开头）.mp4',
+  },
 ]
 
 // 公众号医学科普条漫：图片放在 public/images/comics/（长图）与 covers/（封面）
@@ -245,7 +255,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '把 PCI 术后康复的护理要点画成条漫，帮助患者和家属理解术后恢复关键节点。',
-    cover: '/images/comics/covers/ZC心血管中医护理类方向选题PCI术后康复(未署名)封面16比9.jpg',
+    cover: '/images/comics/covers/ZC心血管中医护理类方向选题PCI术后康复(未署名)封面16比9.webp',
     images: ['/images/comics/ZC心血管中医护理类方向选题PCI术后康复无文献.jpg'],
   },
   {
@@ -256,7 +266,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '用轻松的可视化语言讲清 2 型糖尿病与肥胖的关系，以及日常控糖减重的核心逻辑。',
-    cover: '/images/comics/covers/ZC知糖控重2型糖尿病合并肥胖封面16比9.jpg',
+    cover: '/images/comics/covers/ZC知糖控重2型糖尿病合并肥胖封面16比9.webp',
     images: ['/images/comics/ZC知糖控重2型糖尿病合并肥胖(未署名).jpg'],
   },
   {
@@ -267,7 +277,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '围绕膝关节养护的中医思路做科普插画，图文结合讲解常见误区与保养方法。',
-    cover: '',
+    cover: '/images/comics/thumbs/knee-joint.webp',
     images: ['/images/comics/中医膝关节（未署名）.jpg'],
   },
   {
@@ -278,7 +288,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '老年髋关节骨折的预防、识别与康复要点，用条漫降低医学信息门槛。',
-    cover: '/images/comics/covers/创伤骨科老年髋关节骨折（未署名）封面16比9.jpg',
+    cover: '/images/comics/covers/创伤骨科老年髋关节骨折（未署名）封面16比9.webp',
     images: ['/images/comics/创伤骨科老年髋关节骨折（未署名）.jpg'],
   },
   {
@@ -289,7 +299,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '从糖尿病到视网膜病变的风险链条，用画面提醒患者定期检查、早防早治。',
-    cover: '/images/comics/covers/别让糖尿病偷走视力，警惕糖尿病视网膜(未署名)16比9封面.jpg',
+    cover: '/images/comics/covers/别让糖尿病偷走视力，警惕糖尿病视网膜(未署名)16比9封面.webp',
     images: ['/images/comics/别让糖尿病偷走视力，警惕糖尿病视网膜(未署名).jpg'],
   },
   {
@@ -300,7 +310,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '拆解高盐饮食与骨密度流失之间的关联，给出简单好记的减盐护骨建议。',
-    cover: '/images/comics/covers/吃盐太多也会影响骨骼健康封面16比9.jpg',
+    cover: '/images/comics/covers/吃盐太多也会影响骨骼健康封面16比9.webp',
     images: ['/images/comics/吃盐太多也会影响骨骼健康(未署名).jpg'],
   },
   {
@@ -311,7 +321,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '梳理消化道早癌筛查的新进展与关键信号，帮助读者建立早筛意识。',
-    cover: '',
+    cover: '/images/comics/thumbs/early-cancer.webp',
     images: ['/images/comics/消化道早癌最新（未署名）.jpg'],
   },
   {
@@ -322,7 +332,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '老年人跌倒的高发场景、危险因素与居家防跌倒改造，用画面说清重点。',
-    cover: '/images/comics/covers/老年人跌倒封面16比9.jpg',
+    cover: '/images/comics/covers/老年人跌倒封面16比9.webp',
     images: ['/images/comics/老年人跌倒（未署名）.jpg'],
   },
   {
@@ -333,7 +343,7 @@ export const comics = [
     year: '2024',
     status: '未署名',
     desc: '肾脏疾病早期信号隐匿，条漫用直观对比讲清血液指标与肾脏健康的关系。',
-    cover: '/images/comics/covers/肾病血液偷袭16比9.jpg',
+    cover: '/images/comics/covers/肾病血液偷袭16比9.webp',
     images: ['/images/comics/肾病血液偷袭（未压缩）.jpg'],
   },
 ]
@@ -352,7 +362,7 @@ export const aiTools = [
     tag: 'AI Skill',
     status: '在用',
     card: 'blue',
-    desc: '把常用的治愈系配色与笔触写成可复用的生成 skill，保证每次出图风格不跑偏。',
+    desc: '把常用的插画配色与笔触写成可复用的生成 skill，保证每次出图风格稳定统一。',
   },
   {
     name: '一键排版 Skill',
@@ -370,36 +380,58 @@ export const aiTools = [
   },
 ]
 
+// 优势卡牌阵（5 张，GradientCarousel 3D环视 + 卡片染色背景）
+// 卡图：public/advantages/cards/card-1..5.webp —— 是"透明底完整卡牌"，卡框/拱顶四芒星/底部标签条都已含在图中，
+//       所以卡名直接叠在卡内标签条上，不再用 CSS 画框。
+// nameBottom：卡名中心距卡底的距离（%）。各卡标签条高度略有差异，逐张微调过。
+// tint：背景染色渐变（from/to）。由 sharp 从卡图聚类提取主色后提亮增饱和得出，
+//       对应 React Bits「Gradient Carousel」的"从每张卡提取主色染背景"效果。
+// image 留空则回落到发光小球占位。
 export const advantages = [
   {
-    key: 'star-bottle',
-    symbol: '星图瓶',
+    key: 'alchemy',
+    symbol: '星药工坊',
     title: '用 AI 造工具',
-    desc: '不只会用 AI，还会用 trae 自己写网页 / 小程序，把想法酿成可运行的药剂。',
+    desc: '不只会用 AI，还会用 trae 自己写网页 / 小程序，把想法酿成能运行的药剂。',
+    image: '/advantages/cards/card-1.webp',
+    nameBottom: 7.6,
+    tint: ['hsl(291 21% 28%)', 'hsl(240 61% 31%)'],
   },
   {
-    key: 'compass',
-    symbol: '占星罗盘',
-    title: 'AI 动画设计',
-    desc: '熟悉医学可视化等方向的 AI 动画流程，能指引概念从静帧走向运动。',
-  },
-  {
-    key: 'crystal',
-    symbol: '魔力水晶',
+    key: 'library',
+    symbol: '星辉图书馆',
     title: '兴趣驱动学习',
     desc: '踏入陌生领域 → 自己做出东西 → 正反馈循环，学得快也学得深。',
+    image: '/advantages/cards/card-2.webp',
+    nameBottom: 7.5,
+    tint: ['hsl(326 21% 28%)', 'hsl(228 53% 31%)'],
   },
   {
-    key: 'spellbook',
-    symbol: '咒语书',
+    key: 'ritual',
+    symbol: '星轨仪式',
+    title: 'AI 动画设计',
+    desc: '熟悉医学可视化等方向的 AI 动画流程，能指引概念从静帧走向运动。',
+    image: '/advantages/cards/card-3.webp',
+    nameBottom: 7,
+    tint: ['hsl(300 25% 28%)', 'hsl(248 59% 30%)'],
+  },
+  {
+    key: 'castle',
+    symbol: '云端城堡',
     title: '板绘商业插画',
     desc: '从报班自学到商业落地，能接住"要好看也要能用"的需求。',
+    image: '/advantages/cards/card-4.webp',
+    nameBottom: 7.5,
+    tint: ['hsl(231 57% 31%)', 'hsl(224 95% 29%)'],
   },
   {
-    key: 'wand',
-    symbol: '魔杖',
-    title: '编绳手作',
-    desc: '把兴趣做成实物，也做成可检索的素材系统，双手能创造就不只是想象。',
+    key: 'oath',
+    symbol: '誓约之剑',
+    title: '审美与视觉判断',
+    desc: '能判断什么好看、什么能用，给 AI 的产出做最后一道把关。',
+    image: '/advantages/cards/card-5.webp',
+    nameBottom: 5,
+    tint: ['hsl(317 20% 28%)', 'hsl(355 24% 31%)'],
   },
 ]
 

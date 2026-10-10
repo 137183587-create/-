@@ -54,7 +54,7 @@ export default function MagicBackground() {
       <img
         ref={imgRef}
         className="magic-bg__img"
-        src="/images/backgrounds/magic-sky.jpg"
+        src="/images/backgrounds/magic-sky.webp"
         alt=""
         loading="eager"
         draggable={false}

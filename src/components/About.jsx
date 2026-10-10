@@ -88,8 +88,10 @@ export default function About() {
           loop
           playsInline
           preload="auto"
-          poster="/images/backgrounds/magic-sky.jpg"
+          poster="/images/backgrounds/magic-sky.webp"
         >
+          {/* WebM(VP9) 优先，MP4 兜底；音频已剥离，纯背景静音用 */}
+          <source src="/videos/about-magic.webm" type="video/webm" />
           <source src="/videos/about-magic.mp4" type="video/mp4" />
         </video>
         <span className="about__video-overlay" />

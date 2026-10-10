@@ -9,7 +9,16 @@ export default function Hero() {
       <div className="hero__curtain" aria-hidden="true" />
       {/* 视频背景：把 heroVideo 填上 mp4 路径后即生效；未填时显示动态渐变背景 */}
       {hasVideo && (
-        <video className="hero__video" autoPlay muted loop playsInline>
+        <video
+          className="hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/hero-poster.webp"
+        >
+          {/* WebM(VP9) 优先：体积小、现代浏览器秒加载；MP4(H.264) 兜底 Safari */}
+          <source src="/hero.webm" type="video/webm" />
           <source src={site.heroVideo} type="video/mp4" />
         </video>
       )}

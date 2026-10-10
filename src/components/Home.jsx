@@ -15,7 +15,7 @@ export default function Home() {
       <Hero />
       <About />
       <Projects />
-      <AiMotion items={aiMotion} limit={4} />
+      <AiMotion items={aiMotion} limit={5} />
       <AiTools items={aiTools} />
       <Advantages />
       <Contact />

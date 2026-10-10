@@ -109,11 +109,13 @@ export default function VideoPlayer({ src, title, isOpen, onClose }) {
       <div className="video-player__container">
         {title && <div className="video-player__title">{title}</div>}
 
+        {/* 双源：webm(VP9) 在前、mp4 在后（Safari 兜底）。
+            src 属性不设，否则部分浏览器会用它覆盖 <source>，导致 Safari 拿到 webm 却播不了。 */}
         <video
           ref={videoRef}
           className="video-player__video"
-          src={src}
           playsInline
+          preload="metadata"
           onTimeUpdate={(e) => {
             if (!isDragging) setCurrentTime(e.currentTarget.currentTime)
           }}
@@ -122,7 +124,15 @@ export default function VideoPlayer({ src, title, isOpen, onClose }) {
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onClick={togglePlay}
-        />
+        >
+          {src && /\.mp4$/i.test(src) && (
+            <>
+              <source src={src.replace(/\.mp4$/i, '.webm')} type="video/webm" />
+              <source src={src} type="video/mp4" />
+            </>
+          )}
+          {src && !/\.mp4$/i.test(src) && <source src={src} />}
+        </video>
 
         <div className="video-player__controls">
           <button
