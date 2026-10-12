@@ -81,14 +81,23 @@ export default function MasonryCards({
             onClick={() => handleClick(i)}
             aria-label={it.title || '作品'}
           >
-            {/* 背景层：同图放大虚化，填充 contain 留下的空档（避免黑边突兀） */}
-            <img className="ms__img--bg" src={it.url} alt="" aria-hidden="true" />
+            {/* 背景层：同图放大虚化，填充 contain 留下的空档（避免黑边突兀）。
+                同样延迟加载 + 异步解码，避免进入页面时一次性请求全部背景图拖慢首屏。 */}
+            <img
+              className="ms__img--bg"
+              src={it.url}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+            />
             {/* 前景层：contain 完整显示视频画面，绝不裁切 */}
             <img
               className="ms__img--fg"
               src={it.url}
               alt={it.alt || ''}
               loading="lazy"
+              decoding="async"
               onLoad={(e) => {
                 // 读到视频真实宽高比 → 卡片按真实比例自适应，竖屏也不会被裁
                 const img = e.currentTarget

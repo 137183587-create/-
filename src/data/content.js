@@ -68,15 +68,6 @@ export const projects = [
     media: '/ai-motion/沙画开头.mp4',
     desc: '在企业项目中负责医学类插画与 AI 动画设计（部分内容受保密限制，仅展示脱敏片段）。',
   },
-  {
-    title: '手作素材库',
-    tag: '自研工具 · 2025',
-    year: '2025',
-    status: '可演示',
-    card: 'gold',
-    featured: true,
-    desc: '用 trae 自研的本地检索工具，按颜色与款式智能召回 700+ 张参考图；另有微信小程序版在测试中。',
-  },
 ]
 
 // 视频统一放在 public/ai-motion/，新增动画直接加一条并填 media 即可

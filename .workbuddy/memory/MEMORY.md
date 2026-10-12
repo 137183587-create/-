@@ -7,6 +7,7 @@
 
 ## 工程约定
 - 全站文案 / 数据集中在 `src/data/content.js`，改内容只动此文件。
+- **⚠️ 数据是共享的，只改「某一处展示」时别动数据层**：`content.js` 的 `aiMotion` 被**首页精选（`limit=5`）+ 医学可视化聚合页 `MedicalVisualizationPage`** 共用；`comics` 等亦然。若需求只是「首页这张卡换个内容」，应在展示层（如 `Home.jsx`）对数组做 `.map()` 覆盖后再传给组件，**不要改 content.js**，否则全站视图一起变。2026-10-12 已踩过一次（把首页 PICC 换成多重用药时误改了共享数据，导致医学页也变了）。
 - 样式变量集中在 `src/styles/global.css` 的 `:root`，为后续"换肤"预留 token。
 - Hero 视频背景位：把 mp4 放 `public/hero.mp4`，在 content.js 的 `heroVideo` 填 `'/hero.mp4'` 即生效。
 - 视频统一走 **WebM(VP9) + H.264 MP4 双源**（`<source>` 顺序 webm 在前）。规则：① 背景静音视频（Hero/关于我）剥离音频并转 webm（Hero.webm 640K / about-magic.webm 585K）；② AI 动画卡片视频**有配音**，转 webm(VP9+Opus 保留音频) 主用、mp4 保留作 Safari 兜底与点击弹窗 `VideoPlayer` 播放；③ 自动播放的视频一律走 `LazyVideo`（进视口才加载 + 自动按 mp4 路径派生同名 .webm 优先源），**零 content.js 改动**。中文文件名在 dev/preview 均正常（curl 未编码会 400 是假象，浏览器自动百分号编码后 200）。

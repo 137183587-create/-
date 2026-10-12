@@ -521,13 +521,20 @@ filter:brightness(.86) saturate(1)}
 position:absolute;top:0;right:0;bottom:0;left:0;background:radial-gradient(circle at 50% 40%,rgba(90,110,190,.22),rgba(8,10,20,.9) 70%)}
 .ai-ring__shade{
 position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;
-background:linear-gradient(180deg,#00000038,#00000073 46%,#000000bf)}
+background:linear-gradient(180deg,#00000038,#00000073 46%,#000000bf);
+transition:opacity .5s ease}
 .ai-ring__item:not(.is-active) .ai-ring__shade{
 background:#01030a99}
 .ai-ring__info{
 position:absolute;top:0;right:0;bottom:0;left:0;padding:clamp(22px,3vw,40px);
 display:flex;flex-direction:column;justify-content:flex-end;pointer-events:none;
+transition:opacity .5s ease,transform .5s ease;
 animation:aiRingInfoIn .7s cubic-bezier(.22,1,.36,1) forwards}
+/* 播放中：文案淡出上移、压暗层退去，给画面留白 */
+.ai-ring__card.is-playing .ai-ring__info{
+animation:none;opacity:0;transform:translateY(20px)}
+.ai-ring__card.is-playing .ai-ring__shade{
+opacity:0}
 @keyframes aiRingInfoIn{
 0%{opacity:0;transform:translateY(26px)}
 to{opacity:1;transform:translateY(0)}}
@@ -544,23 +551,20 @@ display:flex;gap:14px;margin-top:18px;font-size:12px;color:#ffffffad;letter-spac
 .ai-ring__side-title{
 position:absolute;left:0;right:0;bottom:0;padding:20px;margin:0;font-size:clamp(15px,1.3vw,19px);font-weight:500;
 color:#ffffffde;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.7);background:linear-gradient(transparent,#0000009e);pointer-events:none}
-.ai-ring__close{
-position:absolute;top:12px;right:12px;z-index:6;
-width:38px;height:38px;display:grid;place-items:center;cursor:pointer;
-border:1px solid rgba(255,255,255,.34);border-radius:50%;
-background:rgba(8,9,14,.72);color:#f5ead0;font-size:22px;line-height:1;
-backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-transition:background .3s ease,border-color .3s ease,transform .3s ease}
-.ai-ring__close:hover{background:rgba(212,175,110,.3);border-color:rgba(212,175,110,.65);transform:rotate(90deg)}
 .ai-ring__play{
 position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);
 width:clamp(64px,6vw,88px);height:clamp(64px,6vw,88px);border-radius:50%;
-border:1px solid rgba(255,255,255,.4);background:#00000052;color:#fff;font-size:26px;
+border:1px solid rgba(255,255,255,.4);background:#00000052;color:#fff;
 display:grid;place-items:center;cursor:pointer;pointer-events:auto;
 -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-transition:transform .3s ease,background .3s ease,border-color .3s ease}
+transition:transform .3s ease,background .3s ease,border-color .3s ease,opacity .35s ease}
 .ai-ring__play:hover{
 transform:translate(-50%,-50%) scale(1.08);background:#00000082;border-color:#ffffffb0}
+/* 播放中：暂停键默认隐去，仅悬停卡片时淡淡浮现，不遮挡画面 */
+.ai-ring__play.is-playing{
+opacity:0}
+.ai-ring__card:hover .ai-ring__play.is-playing{
+opacity:.7}
 .ai-ring__arrow{
 position:absolute;bottom:clamp(18px,4vh,46px);width:clamp(44px,4vw,56px);height:clamp(44px,4vw,56px);
 border-radius:50%;border:1px solid rgba(255,255,255,.12);background:#ffffff0d;color:#ffffffc2;

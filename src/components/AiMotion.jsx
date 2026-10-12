@@ -25,7 +25,8 @@ function offsetKey(i, activeIndex) {
  * - 卡片沿浅弧面排布：中间最前最高，两侧按角度后退、旋转、下沉（球/柱面环视感）
  * - 鼠标移动 → 整环轻微转动 + 各层按深度做「纵深平移」视差（越靠后位移越大）
  * - 鼠标滚轮（悬停区内）→ 切换聚焦卡，并隔离页面滚动；到首/尾自动释放，不把人"卡"在该区块
- * - 视频窗口化加载（仅聚焦 ±1）+ 单一播放；点击卡片开弹窗播放器
+ * - 视频窗口化加载（仅聚焦 ±1）；不自动播放，点击卡片/播放键手动播放与暂停，
+ *   播放时文案与压暗层淡出、画面留白；暂停或播完回到封面态
  * 首页传 limit 取精选，整页路由见 /ai-motion。
  */
 export default function AiMotion({ items, limit }) {
@@ -34,8 +35,8 @@ export default function AiMotion({ items, limit }) {
   const count = shown.length
 
   const [activeIndex, setActiveIndex] = useState(0)
-  // 就地播放的卡片下标；null = 未进入就地播放
-  const [inplaceIdx, setInplaceIdx] = useState(null)
+  // 聚焦卡是否正在播放；手动点击切换，不再自动播放
+  const [playing, setPlaying] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const stageRef = useRef(null)
   const lastWheel = useRef(0)
@@ -80,6 +81,7 @@ export default function AiMotion({ items, limit }) {
       const now = Date.now()
       if (now - lastWheel.current < 620) return
       lastWheel.current = now
+      setPlaying(false)
       setActiveIndex((i) => (down ? Math.min(count - 1, i + 1) : Math.max(0, i - 1)))
     }
     window.addEventListener('wheel', onWheel, { passive: false })
@@ -96,18 +98,17 @@ export default function AiMotion({ items, limit }) {
     return set
   }, [activeIndex, count])
 
-  /* ---------- 单一播放：同一时间只有聚焦卡在播 ----------
-     两级状态：
-     - 默认：聚焦卡静音循环播（悬停式预览，不打扰）
-     - 点击后 `inplaceIdx === i`：**带声音 + 显示 controls** 就地播放，不再弹 VideoPlayer */
+  /* ---------- 单一播放：不自动播放，仅聚焦卡在用户点击后播放 ----------
+     默认静置：展示缩略图 poster + 文案；点击卡片/播放键才播放，
+     播放时文案淡出、画面提亮；暂停或播完回到封面态。 */
   useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return
-      const inplace = inplaceIdx === i
-      video.muted = !inplace
-      video.loop = !inplace
-      video.controls = inplace
-      if (i === activeIndex && loadedSet.has(i)) {
+      const shouldPlay = i === activeIndex && playing
+      video.muted = !shouldPlay
+      video.loop = false
+      video.controls = false
+      if (shouldPlay) {
         const p = video.play()
         if (p && p.catch) p.catch(() => {})
       } else {
@@ -119,23 +120,35 @@ export default function AiMotion({ items, limit }) {
         }
       }
     })
-  }, [activeIndex, loadedSet, inplaceIdx])
+  }, [activeIndex, loadedSet, playing])
 
-  /* ---------- 键盘左右切换（播放器打开时不接管） ---------- */
+  /* ---------- 键盘左右切换 ---------- */
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'ArrowLeft') setActiveIndex((i) => Math.max(0, i - 1))
-      if (e.key === 'ArrowRight') setActiveIndex((i) => Math.min(count - 1, i + 1))
+      if (e.key === 'ArrowLeft' && activeIndex > 0) {
+        setPlaying(false)
+        setActiveIndex(activeIndex - 1)
+      }
+      if (e.key === 'ArrowRight' && activeIndex < count - 1) {
+        setPlaying(false)
+        setActiveIndex(activeIndex + 1)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [count])
+  }, [activeIndex, count])
 
   const activeItem = shown[activeIndex]
   const glowColor = glowByCard[activeItem?.card] || glowByCard.gold
 
-  const goPrev = () => setActiveIndex((i) => Math.max(0, i - 1))
-  const goNext = () => setActiveIndex((i) => Math.min(count - 1, i + 1))
+  // 切换聚焦卡：一律回到封面态（不自动播放）
+  const goTo = (i) => {
+    if (i === activeIndex || i < 0 || i >= count) return
+    setPlaying(false)
+    setActiveIndex(i)
+  }
+  const goPrev = () => goTo(activeIndex - 1)
+  const goNext = () => goTo(activeIndex + 1)
 
   return (
     <>
@@ -176,26 +189,26 @@ export default function AiMotion({ items, limit }) {
                   aria-roledescription="slide"
                   aria-label={`${i + 1} / ${count}`}
                   onClick={() => {
+                    // 聚焦卡：点击切换播放/暂停；非聚焦卡：切换聚焦（回封面态）
                     if (isActive) {
-                      // 就地播放（带声+controls），再次点击关闭
-                      setInplaceIdx((v) => (v === i ? null : i))
+                      setPlaying((v) => !v)
                     } else {
-                      setActiveIndex(i)
+                      goTo(i)
                     }
                   }}
                 >
                   <div className="ai-ring__para">
-                    <div className="ai-ring__card">
+                    <div className={`ai-ring__card ${isActive && playing ? 'is-playing' : ''}`}>
                       {loadedSet.has(i) && m.media ? (
                         <video
                           ref={(el) => (videoRefs.current[i] = el)}
                           className="ai-ring__video"
                           preload="metadata"
                           playsInline
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setInplaceIdx((v) => (v === i ? null : i))
-                          }}
+                          poster={m.media
+                            .replace('/ai-motion/', '/ai-motion/thumbs/')
+                            .replace(/\.mp4$/i, '.webp')}
+                          onEnded={() => setPlaying(false)}
                         >
                           {/* webm(VP9) 优先，mp4 兜底 —— 与 LazyVideo 同一套双源规格 */}
                           <source src={m.media.replace(/\.mp4$/i, '.webm')} type="video/webm" />
@@ -221,32 +234,27 @@ export default function AiMotion({ items, limit }) {
                         <h3 className="ai-ring__side-title">{m.title}</h3>
                       )}
 
-                      {/* 就地播放时的关闭按钮（点卡片/视频本身也能关，这里给显式入口） */}
-                      {isActive && inplaceIdx === i && (
+                      {/* 播放/暂停切换：播放中按钮淡出，仅悬停卡片时浮现，避免遮挡画面 */}
+                      {isActive && (
                         <button
                           type="button"
-                          className="ai-ring__close"
+                          className={`ai-ring__play ${playing ? 'is-playing' : ''}`}
                           onClick={(e) => {
                             e.stopPropagation()
-                            setInplaceIdx(null)
+                            setPlaying((v) => !v)
                           }}
-                          aria-label={'关闭 ' + m.title + ' 的播放'}
+                          aria-label={`${playing ? '暂停' : '播放'} ${m.title}`}
                         >
-                          ×
-                        </button>
-                      )}
-
-                      {isActive && inplaceIdx === null && (
-                        <button
-                          type="button"
-                          className="ai-ring__play"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setInplaceIdx((v) => (v === i ? null : i))
-                          }}
-                          aria-label={`播放 ${m.title}`}
-                        >
-                          ▶
+                          {playing ? (
+                            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                              <rect x="6.6" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" />
+                              <rect x="13.8" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" />
+                            </svg>
+                          ) : (
+                            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M8 5.4v13.2L19 12z" fill="currentColor" />
+                            </svg>
+                          )}
                         </button>
                       )}
                     </div>
@@ -300,7 +308,7 @@ export default function AiMotion({ items, limit }) {
                 aria-selected={i === activeIndex}
                 aria-label={`第 ${i + 1} 个作品`}
                 className={`ai-ring__dot ${i === activeIndex ? 'is-active' : ''}`}
-                onClick={() => setActiveIndex(i)}
+                onClick={() => goTo(i)}
               />
             ))}
           </div>
