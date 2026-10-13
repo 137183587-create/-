@@ -84,6 +84,17 @@ export const aiMotion = [
     media: '/ai-motion/麻醉科和肝胆外科.mp4',
   },
   {
+    title: '阿尔茨海默照护',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'alzheimer-care',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2026',
+    status: '可演示',
+    card: 'warm',
+    desc: '把阿尔茨海默的照护日常做成一段温柔的开篇——记忆会模糊，守护不会。',
+    media: '/ai-motion/阿尔茨海默照护.mp4',
+  },
+  {
     title: '贵州眼科 · 眼外伤护理',
     tag: 'AI 动画 · 医学可视化',
     year: '2024',
@@ -237,17 +248,6 @@ export const aiMotion = [
     card: 'amber',
     desc: '针对老年人常见的多重用药问题，用 AI 动画讲清药物相互作用与安全用药要点。',
     media: '/ai-motion/AI老年人多重用药3min（开头）.mp4',
-  },
-  {
-    title: '阿尔茨海默照护',
-    // 关联项目介绍面板（见 aiProjects）
-    project: 'alzheimer-care',
-    tag: 'AI 动画 · 医学可视化',
-    year: '2026',
-    status: '可演示',
-    card: 'warm',
-    desc: '把阿尔茨海默的照护日常做成一段温柔的开篇——记忆会模糊，守护不会。',
-    media: '/ai-motion/阿尔茨海默照护.mp4',
   },
 ]
 

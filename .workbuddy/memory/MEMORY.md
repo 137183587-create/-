@@ -39,7 +39,7 @@
 - ⚠️ **页面的 `galleryImages` 是 `.map()` 派生的，必须透传 `project` 字段**，否则面板静默不渲染、**无任何报错**（`focusItem?.project` 为 undefined → null → 跳过）。给组件传派生对象时，新增字段要同步加进 map。
 - ⚠️ `node -e` 里 `fs.readFileSync('/tmp/x')` 会被解析成 `F:\tmp\x`；用 `$(cd /tmp && pwd -W)` 取 Windows 绝对路径。
 - **`aiProjects` 可选字段 `heroImage`**：面板头部装饰背景（仅氛围，双层 background = 遮罩渐变 + `var(--panel-hero)`，负 margin 出血到面板边缘）。不写则无背景。
-- **设定图网格**：`grp.items.length===1` 时自动整幅铺满（`ms__setgrid--single`，双类名提特异性防 ≤1180px 媒体查询盖回两列）。`.ms__set img` 固定 `aspect-ratio:16/9` + cover（设定图一律 16:9，零裁切）。
+- **设定图网格**：`grp.items.length===1` 时自动整幅铺满（`ms__setgrid--single`，双类名提特异性防 ≤1180px 媒体查询盖回两列）。`.ms__set img` 用 **`aspect-ratio:var(--ms-set-aspect,16/9)`** + cover——默认 16:9（旧面板零影响），`onLoad` 读 `it.aspect`（数据显式指定，防布局跳动）或 natural 尺寸写入该变量。**竖版全身立绘**（如产后抑郁 `aspect:'9 / 16'`）因此不被裁。设定图若横竖混排，横图可不写 `aspect`（读 natural），竖图务必写。
 - **新项目命名**：`public/project-settings/<项目缩写>-*`（如 `alz-char-*` / `alz-process` / `alz-hero`），避免多项目撞名。
 - **新增 AI 动画视频规格**（720p 起）：MP4 `libx264 crf26 preset slow +aac 96k +faststart`（≤7MB）；WebM `libvpx-vp9 crf34 cpu-used 3 +libopus 80k`；缩略图抽帧 1280 宽 webp q82。工具走 `node_modules/ffmpeg-static/ffmpeg.exe`（PATH 里没有 ffmpeg）。
 - ⚠️ **dev server 的 CSS 模块缓存会只吃到部分并行编辑**（同批 4 处改动 served 3 处）。现象：浏览器里属性 computed 为 `none` 但源文件是对的。**解法：`touch src/styles/global.css` 强制 mtime 变化再重新请求**。另：Vite 把 CSS 包成 JS 字符串且**规则内有真实换行**，用 `indexOf('selector{')` 判断存在性，别把换行后的属性拼进匹配串。
