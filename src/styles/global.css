@@ -723,6 +723,120 @@ background:rgba(3,4,8,.94);
 backdrop-filter:blur(18px) saturate(.7);-webkit-backdrop-filter:blur(18px) saturate(.7);
 cursor:zoom-out;animation:msFade .28s ease}
 @keyframes msFade{from{opacity:0}to{opacity:1}}
+/* ---------- 项目介绍面板：两栏（视频 | 项目详情） ---------- */
+.ms__focus-shell{
+position:relative;z-index:1;
+display:flex;flex-direction:column;align-items:center;
+gap:0;max-width:min(94vw,1180px);max-height:92vh;
+animation:msPop .34s cubic-bezier(.22,1,.36,1)}
+/* 有项目面板 → 左右分栏 */
+.ms__focus-shell--split{
+display:grid;
+grid-template-columns:minmax(0,1.25fr) minmax(360px,0.75fr);
+grid-template-rows:auto minmax(0,1fr);
+gap:28px;align-items:start;
+width:min(94vw,1400px)}
+.ms__focus-shell--split .ms__focus-main{
+display:flex;flex-direction:column;gap:16px;min-width:0}
+/* 分栏时视频宽度由栅格决定，不再受stage 的固定宽度限制 */
+.ms__focus-shell--split .ms__focus-stage{width:100%;max-height:66vh}
+/* ============ 项目详情面板 ============ */
+.ms__panel{
+grid-column:2;grid-row:1 / span 2;
+min-width:0;height:100%;max-height:92vh;
+overflow-y:auto;overscroll-behavior:contain;
+padding:26px 24px 30px;
+border-radius:18px;
+background:linear-gradient(180deg,rgba(18,17,14,.72),rgba(10,10,14,.86));
+border:1px solid rgba(255,255,255,.09);
+box-shadow:0 26px 70px rgba(0,0,0,.62);
+backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+scrollbar-width:thin;scrollbar-color:rgba(212,175,110,.34) transparent}
+.ms__panel::-webkit-scrollbar{width:7px}
+.ms__panel::-webkit-scrollbar-thumb{background:rgba(212,175,110,.34);border-radius:99px}
+.ms__panel::-webkit-scrollbar-track{background:transparent}
+/* 面板头部 · hero 装饰背景（可选 heroImage）：只作氛围，文字压在最上层，不承载信息 */
+.ms__panel-head--hero{
+margin:-26px -24px 24px;
+padding:30px 24px 26px;
+border-radius:18px 18px 0 0;
+background-image:
+linear-gradient(180deg,rgba(9,9,13,.30) 0%,rgba(9,9,13,.70) 54%,rgba(11,10,14,.96) 100%),
+var(--panel-hero);
+background-size:cover,cover;
+background-position:center 34%,center 34%;
+background-repeat:no-repeat;
+box-shadow:inset 0 -1px 0 rgba(255,255,255,.06)}
+.ms__panel-eyebrow{
+display:block;font-family:var(--font-display);
+font-size:10px;letter-spacing:.42em;color:var(--accent);margin-bottom:10px}
+.ms__panel-title{
+margin:0;font-family:var(--font-display);
+font-size:clamp(1.5rem,2.4vw,2.1rem);font-weight:500;letter-spacing:.06em;
+color:#f5ead0;line-height:1.2}
+.ms__panel-sub{
+margin:8px 0 0;font-size:12px;letter-spacing:.2em;color:rgba(212,175,110,.9)}
+.ms__panel-summary{
+margin:16px 0 0;font-size:13px;line-height:2;color:rgba(240,236,226,.7);
+letter-spacing:.04em}
+/* 区块 */
+.ms__panel-block{margin-top:30px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08)}
+.ms__panel-h4{
+display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+margin:0 0 16px;font-family:var(--font-display);
+font-size:13px;letter-spacing:.24em;color:#f0e7d4;font-weight:500}
+.ms__panel-hint{
+font-size:10px;letter-spacing:.06em;font-weight:400;
+color:rgba(255,255,255,.36);text-align:right}
+/* ---- 生产流程：编号 + 标题 + 描述 ---- */
+.ms__flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ms__flow-item{display:flex;gap:13px;align-items:flex-start}
+.ms__flow-no{
+flex:none;width:30px;height:30px;display:grid;place-items:center;
+border-radius:50%;font-family:var(--font-display);
+font-size:11px;letter-spacing:.04em;color:var(--accent);
+background:rgba(212,175,110,.12);
+border:1px solid rgba(212,175,110,.3)}
+.ms__flow-body{min-width:0;flex:1}
+.ms__flow-top{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.ms__flow-top strong{
+font-size:13.5px;font-weight:600;letter-spacing:.08em;color:#f5ead0}
+.ms__flow-tag{
+font-style:normal;font-size:10px;letter-spacing:.1em;
+padding:2px 8px;border-radius:99px;
+color:rgba(212,175,110,.92);
+background:rgba(212,175,110,.1);
+border:1px solid rgba(212,175,110,.24)}
+.ms__flow-body p{
+margin:6px 0 0;font-size:12px;line-height:1.9;
+color:rgba(238,234,224,.62);letter-spacing:.03em}
+/* ---- 设定图网格 ---- */
+.ms__setgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+/* 组内只有一张图 → 整幅铺满整行（如「过程稿」） */
+.ms__setgrid.ms__setgrid--single{grid-template-columns:minmax(0,1fr)}
+.ms__set{margin:0;display:flex;flex-direction:column;gap:8px}
+.ms__set img{
+width:100%;aspect-ratio:var(--ms-set-aspect,16 / 9);object-fit:cover;display:block;
+border-radius:10px;background:#0b0c11;
+box-shadow:0 8px 20px rgba(0,0,0,.44), 0 0 0 1px rgba(255,255,255,.08);
+transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s ease}
+.ms__set:hover img{
+transform:translateY(-3px);
+box-shadow:0 14px 30px rgba(0,0,0,.55), 0 0 0 1px rgba(212,175,110,.42)}
+.ms__set figcaption{
+font-size:11px;letter-spacing:.1em;color:rgba(240,236,226,.62);text-align:center}
+@media (max-width:1180px){
+.ms__focus-shell--split{
+grid-template-columns:minmax(0,1fr);
+grid-template-rows:auto auto;
+gap:20px;width:min(94vw,820px)}
+.ms__panel{grid-column:1;grid-row:auto;max-height:46vh}
+.ms__setgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){
+.ms__panel{padding:20px 16px 22px;border-radius:14px}
+.ms__panel-head--hero{margin:-20px -16px 20px;padding:24px 16px 22px;border-radius:14px 14px 0 0}
+.ms__setgrid{grid-template-columns:minmax(0,1fr)}
+.ms__focus-shell--split .ms__focus-stage{max-height:44vh}}
 .ms__focus-img{
 max-width:min(80vw,940px);max-height:62vh;
 border-radius:16px;object-fit:contain;

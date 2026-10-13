@@ -24,6 +24,8 @@ export default function MedicalVisualizationPage() {
           alt: m.title,
           subtitle: m.tag,
           media: m.media,
+          // 透传 project（关联 aiProjects 的 id），有值则聚焦层展示项目介绍面板
+          project: m.project,
         })),
     [],
   )

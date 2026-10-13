@@ -74,6 +74,8 @@ export const projects = [
 export const aiMotion = [
   {
     title: '麻醉科 & 肝胆外科',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'lao-tou-chuang-guan',
     tag: 'AI 动画 · 医学可视化',
     year: '2024',
     status: '可演示',
@@ -92,6 +94,8 @@ export const aiMotion = [
   },
   {
     title: '产后抑郁科普',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'postpartum-depression',
     tag: 'AI 动画 · 医学可视化',
     year: '2024',
     status: '可演示',
@@ -233,6 +237,299 @@ export const aiMotion = [
     card: 'amber',
     desc: '针对老年人常见的多重用药问题，用 AI 动画讲清药物相互作用与安全用药要点。',
     media: '/ai-motion/AI老年人多重用药3min（开头）.mp4',
+  },
+  {
+    title: '阿尔茨海默照护',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'alzheimer-care',
+    tag: 'AI 动画 · 医学可视化',
+    year: '2026',
+    status: '可演示',
+    card: 'warm',
+    desc: '把阿尔茨海默的照护日常做成一段温柔的开篇——记忆会模糊，守护不会。',
+    media: '/ai-motion/阿尔茨海默照护.mp4',
+  },
+]
+
+/* ======================================================================
+   AI 动画项目详情：点开卡片后的「项目介绍面板」
+   ----------------------------------------------------------------------
+   一个 AI 动画项目的完整生产流程（我作为 agent 参与其中）：
+     脚本 → 分镜描述 → LibTV 画布 → 角色/场景/道具设定 → 分镜节点
+     → 人工校验 → 生成开篇视频 → 提取角色音色 → 循环 → 剪映剪辑 → BGM
+   设定图放public/project-settings/（WebP，q82）。
+   要给新项目加面板：在此追加一条，并确保对应 aiMotion 条目带 project: '<项目 id>'。
+   ====================================================================== */
+export const aiProjects = [
+  {
+    id: 'lao-tou-chuang-guan',
+    name: '倔老头闯关记',
+    subtitle: '胆囊结石手术麻醉大揭秘',
+    summary:
+      '以"倔老头"与医生的对手戏，把胆囊结石手术的麻醉过程讲成一场生死关卡。' +
+      '角色先定妆送审，再逐镜生成分镜节点，角色音色在开篇视频产出后提取固定下来。',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '设定搭建',
+        tag: 'agent',
+        desc: '在画布中建立角色设定、场景设定、道具设定三类节点。',
+      },
+      {
+        title: '角色送审',
+        tag: '本人',
+        desc: '角色定妆图送审，通过后才继续往下推进——角色不通过，后面全白做。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点）。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇部分约 30 秒的视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 三类设定图：role 角色 / prop 道具 / scene 场景 */
+    settings: [
+      {
+        group: 'role',
+        label: '角色设定',
+        note: '角色先定妆送审，通过后再进入分镜',
+        items: [
+          { name: '倔老头', img: '/project-settings/char-lao-tou.webp' },
+          { name: '医生', img: '/project-settings/char-yi-sheng.webp' },
+        ],
+      },
+      {
+        group: 'prop',
+        label: '道具设定',
+        note: '关键道具需出结构分解图，锁定形制与材质',
+        items: [{ name: '破碎伤脑谣言锤', img: '/project-settings/prop-chui.webp' }],
+      },
+      {
+        group: 'scene',
+        label: '场景设定',
+        note: '同一场景给出多角度参考，保证跨镜头一致',
+        items: [
+          { name: '卧室', img: '/project-settings/scene-wo-shi.webp' },
+          { name: '科幻数据空间', img: '/project-settings/scene-ke-huan.webp' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'alzheimer-care',
+    name: '阿尔茨海默照护',
+    subtitle: '山村里的记忆守护 · 开篇 2.5min',
+    summary:
+      '一部 2.5 分钟的阿尔茨海默照护科普开篇。山村的黄昏、照护奶奶的女儿、一位护士，' +
+      '还有一只橘猫与一团拟人化的「火苗小怪」——把记忆一点点模糊的过程，讲成一段被温柔守护的日常。' +
+      '本片只做了人物设定，未单独建场景设定。',
+    /* 面板头部的装饰背景图（仅作氛围，不承载信息） */
+    heroImage: '/project-settings/alz-hero.webp',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建 LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '人物设定',
+        tag: 'agent',
+        desc: '本片只建人物设定节点，用三视图锁定每个角色的形象（奶奶 / 女儿 / 护士 / 火苗小怪 / 橘猫）。',
+      },
+      {
+        title: '角色送审',
+        tag: '本人',
+        desc: '角色定妆图送审，通过后才继续往下推进——角色不通过，后面全白做。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点），并以山村黄昏作为统一的场景基调。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇部分约 2.5 分钟的视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 设定图：本片只有人物设定 + 一版过程稿 */
+    settings: [
+      {
+        group: 'role',
+        label: '人物设定',
+        note: '三视图先锁形，再进分镜',
+        items: [
+          { name: '奶奶', img: '/project-settings/alz-char-nainai.webp' },
+          { name: '女儿', img: '/project-settings/alz-char-nver.webp' },
+          { name: '护士', img: '/project-settings/alz-char-hushi.webp' },
+          { name: '火苗小怪', img: '/project-settings/alz-char-huomiao.webp' },
+          { name: '橘猫', img: '/project-settings/alz-char-jumao.webp' },
+        ],
+      },
+      {
+        group: 'process',
+        label: '过程稿',
+        note: '非最终人设 · 过程中的一版探索',
+        items: [{ name: '过程探索稿', img: '/project-settings/alz-process.webp' }],
+      },
+    ],
+  },
+  {
+    id: 'postpartum-depression',
+    name: '产后抑郁科普',
+    subtitle: '看见产后情绪的低谷',
+    summary:
+      '把产后抑郁的情绪表现与干预路径，讲成李靖与殷夫人一家的故事。' +
+      '面部三视图锁定表情与角度基准，全身立绘锁定形体与服装，角色定妆送审后再进入分镜。',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建 LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '人物设定',
+        tag: 'agent',
+        desc: '在画布中建立人物设定节点，分「面部三视图」与「全身立绘」两类：前者锁表情与角度，后者锁形体与服装。',
+      },
+      {
+        title: '角色送审',
+        tag: '本人',
+        desc: '角色定妆图送审，通过后才继续往下推进——角色不通过，后面全白做。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点）。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇部分约 2.5 分钟的视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 设定图：本片按「面部三视图 / 全身立绘」两类呈现（全身立绘为竖版，按真实比例显示） */
+    settings: [
+      {
+        group: 'role-face',
+        label: '面部三视图',
+        note: '定表情与多角度基准',
+        items: [
+          { name: '李靖', img: '/project-settings/ppd-face-lijing.webp' },
+          { name: '殷夫人', img: '/project-settings/ppd-face-yinfuren.webp' },
+        ],
+      },
+      {
+        group: 'role-body',
+        label: '全身立绘',
+        note: '定形体与服装基准',
+        items: [
+          { name: '李靖', img: '/project-settings/ppd-body-lijing.webp', aspect: '9 / 16' },
+          { name: '殷夫人', img: '/project-settings/ppd-body-yinfuren.webp', aspect: '9 / 16' },
+        ],
+      },
+    ],
   },
 ]
 
