@@ -28,6 +28,7 @@
 
 ## 交付验收（TDD/BDD）
 - 每功能先 Given/When/Then；交付附 checklist；构建通过 + 浏览器实测（点击/滚动/跳转）+ agent-browser 截图（`C:\Users\Mayn\.workbuddy\shots\`，eval 用 `var` 不 `const`）。
+- ⚠️ **agent-browser 用法**：① 导航→点击→截图**整条链塞进同一次 bash 调用**（跨调用页面会重置为空白）；② `screenshot` 是**位置参数** `[selector] [path]`，**无 `--path`**；③ 聚焦面板用**视口截图 + `scrollIntoView`**，别用 `--full`（fixed 层会失真）；④ 卡片点击用 `document.querySelectorAll('.ms__card')[i].click()` 比 `text=` 文本选择器稳。
 
 ## 项目卫生
 - 自动生成物每 ~5 轮扫描清理；安装包/备份/临时文件统一放 `E:\wangzhan\作品集网站开发过程残留备份\`，勿散放项目根/`.workbuddy`；`dist.bak/` 保留作回滚。
@@ -40,7 +41,11 @@
 - ⚠️ `node -e` 里 `fs.readFileSync('/tmp/x')` 会被解析成 `F:\tmp\x`；用 `$(cd /tmp && pwd -W)` 取 Windows 绝对路径。
 - **`aiProjects` 可选字段 `heroImage`**：面板头部装饰背景（仅氛围，双层 background = 遮罩渐变 + `var(--panel-hero)`，负 margin 出血到面板边缘）。不写则无背景。
 - **设定图网格**：`grp.items.length===1` 时自动整幅铺满（`ms__setgrid--single`，双类名提特异性防 ≤1180px 媒体查询盖回两列）。`.ms__set img` 用 **`aspect-ratio:var(--ms-set-aspect,16/9)`** + cover——默认 16:9（旧面板零影响），`onLoad` 读 `it.aspect`（数据显式指定，防布局跳动）或 natural 尺寸写入该变量。**竖版全身立绘**（如产后抑郁 `aspect:'9 / 16'`）因此不被裁。设定图若横竖混排，横图可不写 `aspect`（读 natural），竖图务必写。
-- **新项目命名**：`public/project-settings/<项目缩写>-*`（如 `alz-char-*` / `alz-process` / `alz-hero`），避免多项目撞名。
+- **新项目命名**：`public/project-settings/<项目缩写>-*`，避免多项目撞名。已落地 5 个面板项目：
+  `lao-tou-chuang-guan`（倔老头，char-/prop-/scene-）、`alzheimer-care`（alz-char-*/alz-process/alz-hero）、
+  `postpartum-depression`（ppd-face-*/ppd-body-*）、`eye-trauma-care`（eye-nurse/eye-mascot/eye-scene/eye-hero）、
+  `huangqi`（AI 说医解药·太行黄芪，huangqi-boy/sage/specimen/furnace/wood/cane/scene/hero；三组设定 人物2+道具4+场景1）。
+  关联方式：`aiMotion` 条目加 `project: '<id>'`（**必须**，否则面板静默不渲染）。
 - **新增 AI 动画视频规格**（720p 起）：MP4 `libx264 crf26 preset slow +aac 96k +faststart`（≤7MB）；WebM `libvpx-vp9 crf34 cpu-used 3 +libopus 80k`；缩略图抽帧 1280 宽 webp q82。工具走 `node_modules/ffmpeg-static/ffmpeg.exe`（PATH 里没有 ffmpeg）。
 - ⚠️ **dev server 的 CSS 模块缓存会只吃到部分并行编辑**（同批 4 处改动 served 3 处）。现象：浏览器里属性 computed 为 `none` 但源文件是对的。**解法：`touch src/styles/global.css` 强制 mtime 变化再重新请求**。另：Vite 把 CSS 包成 JS 字符串且**规则内有真实换行**，用 `indexOf('selector{')` 判断存在性，别把换行后的属性拼进匹配串。
 

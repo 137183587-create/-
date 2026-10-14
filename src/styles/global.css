@@ -876,6 +876,7 @@ margin:14px 0 0;font-size:11px;letter-spacing:.24em;color:rgba(255,255,255,.42)}
 @media (max-width:640px){
 .ms{columns:1}
 .ms__label{font-size:11px;padding:22px 10px 10px}
+}
 /* ================= VideoPlayer：自定义视频播放器 =================
    ⚠️ 这里必须显式给 <video> 定尺寸（width/height/min-height）。
    缺失时 video 在容器里高度塌成 0 → **只闻声、不见影**（踩过一次）。 */
@@ -970,11 +971,11 @@ background:rgba(212,175,110,.28);border-color:rgba(212,175,110,.6);transform:rot
 .video-player__controls{gap:10px;padding:10px 12px}
 .video-player__time{min-width:82px;font-size:11px}
 }
-gap:10px;padding:12px 14px}
-.video-player__time{
-min-width:auto;font-size:12px}
-.video-player__volume{
-display:none}
+@media (max-width:520px){
+.video-player__controls{gap:10px;padding:12px 14px}
+.video-player__time{min-width:auto;font-size:12px}
+.video-player__volume{display:none}
+}
 .comics-page{
 --comic-radius: 18px}
 .comics-hero{

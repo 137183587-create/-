@@ -96,6 +96,8 @@ export const aiMotion = [
   },
   {
     title: '贵州眼科 · 眼外伤护理',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'eye-trauma-care',
     tag: 'AI 动画 · 医学可视化',
     year: '2024',
     status: '可演示',
@@ -169,13 +171,15 @@ export const aiMotion = [
     media: '/ai-motion/海姆立克.mp4',
   },
   {
-    title: '甲减科普',
+    title: 'AI 说医解药 · 推荐选题「太行黄芪」',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'huangqi',
     tag: 'AI 动画 · 医学可视化',
-    year: '2024',
+    year: '2025',
     status: '可演示',
-    card: 'blue',
-    desc: '甲状腺功能减退的成因与表现动画科普。',
-    media: '/ai-motion/甲减.mp4',
+    card: 'warm',
+    desc: '以"说医解药"系列推荐太行黄芪道地药材，用 AI 动画讲清道地药材的种植与功效。',
+    media: '/ai-motion/AI说医解药，推荐选题太行黄芪.mp4',
   },
   {
     title: '男性 HPV 科普',
@@ -232,13 +236,13 @@ export const aiMotion = [
     media: '/ai-motion/huangfumi-acupuncture.mp4',
   },
   {
-    title: 'AI 说医解药 · 推荐选题「太行黄芪」',
+    title: '甲减科普',
     tag: 'AI 动画 · 医学可视化',
-    year: '2025',
+    year: '2024',
     status: '可演示',
-    card: 'warm',
-    desc: '以"说医解药"系列推荐太行黄芪道地药材，用 AI 动画讲清道地药材的种植与功效。',
-    media: '/ai-motion/AI说医解药，推荐选题太行黄芪.mp4',
+    card: 'blue',
+    desc: '甲状腺功能减退的成因与表现动画科普。',
+    media: '/ai-motion/甲减.mp4',
   },
   {
     title: 'AI 老年人多重用药科普',
@@ -528,6 +532,191 @@ export const aiProjects = [
           { name: '李靖', img: '/project-settings/ppd-body-lijing.webp', aspect: '9 / 16' },
           { name: '殷夫人', img: '/project-settings/ppd-body-yinfuren.webp', aspect: '9 / 16' },
         ],
+      },
+    ],
+  },
+  {
+    id: 'eye-trauma-care',
+    name: '贵州眼科 · 眼外伤护理',
+    subtitle: '眼外伤护理流程 · 含真人数字人讲解',
+    summary:
+      '一段眼外伤护理科普动画，含真人数字人讲解，把急性期处理与康复要点讲清楚。' +
+      '先建立「护士」与吉祥物两个角色设定，再给出科幻「控制中心」场景的多角度参考；' +
+      '角色与场景定妆送审后，才逐镜推进分镜。',
+    /* 面板头部的装饰背景图（仅作氛围，不承载信息） */
+    heroImage: '/project-settings/eye-hero.webp',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建 LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '设定搭建',
+        tag: 'agent',
+        desc: '在画布中建立人物设定与场景设定两类节点：前者锁角色形象，后者锁「控制中心」的空间与机位。',
+      },
+      {
+        title: '定妆送审',
+        tag: '本人',
+        desc: '角色与场景定妆图送审，通过后才继续往下推进——设定不通过，后面全白做。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点）。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑（含 1 分钟真人数字人讲解段）。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 设定图：人物设定（护士 / 吉祥物）+ 场景设定（控制中心） */
+    settings: [
+      {
+        group: 'role',
+        label: '人物设定',
+        note: '每个角色一版设定，含全身三视图与面部表情',
+        items: [
+          { name: '护士', img: '/project-settings/eye-nurse.webp' },
+          { name: '吉祥物', img: '/project-settings/eye-mascot.webp' },
+        ],
+      },
+      {
+        group: 'scene',
+        label: '场景设定',
+        note: '同一场景给出多角度参考，保证跨镜头一致',
+        items: [{ name: '控制中心', img: '/project-settings/eye-scene.webp' }],
+      },
+    ],
+  },
+  {
+    id: 'huangqi',
+    name: 'AI 说医解药 · 太行黄芪',
+    subtitle: '道地药材科普 · 天宫与展馆双场景',
+    summary:
+      '「AI 说医解药」系列的推荐选题之一：一名背着红色书包的小学生，跟着白须仙翁一路游历，' +
+      '把道地药材「太行黄芪」的形态、种植与功效讲成一段故事。' +
+      '天宫的仙宴与药材展馆两类场景对切，配合黄芪标本、仙丹炉、药材切段与木质拐杖等道具设定。',
+    /* 面板头部的装饰背景图（仅作氛围，不承载信息） */
+    heroImage: '/project-settings/huangqi-hero.webp',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建 LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '设定搭建',
+        tag: 'agent',
+        desc: '在画布中建立人物、道具、场景三类设定节点：人物锁角色形象，道具出结构分解，场景锁空间与机位。',
+      },
+      {
+        title: '定妆送审',
+        tag: '本人',
+        desc: '人物与关键道具定妆图送审，通过后才继续往下推进——设定不通过，后面全白做。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点）。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 设定图：人物设定（小学生 / 白须仙翁）+ 道具设定 + 场景设定（黄芪展馆） */
+    settings: [
+      {
+        group: 'role',
+        label: '人物设定',
+        note: '每个角色一版设定，含全身三视图与面部表情',
+        items: [
+          { name: '小学生', img: '/project-settings/huangqi-boy.webp' },
+          { name: '白须仙翁', img: '/project-settings/huangqi-sage.webp' },
+        ],
+      },
+      {
+        group: 'prop',
+        label: '道具设定',
+        note: '关键道具需出结构分解图，锁定形制与材质',
+        items: [
+          { name: '黄芪标本', img: '/project-settings/huangqi-specimen.webp' },
+          { name: '仙丹炉', img: '/project-settings/huangqi-furnace.webp' },
+          { name: '真黄芪', img: '/project-settings/huangqi-wood.webp' },
+          { name: '拐杖', img: '/project-settings/huangqi-cane.webp' },
+        ],
+      },
+      {
+        group: 'scene',
+        label: '场景设定',
+        note: '同一场景给出多角度参考，保证跨镜头一致',
+        items: [{ name: '黄芪展馆', img: '/project-settings/huangqi-scene.webp' }],
       },
     ],
   },
