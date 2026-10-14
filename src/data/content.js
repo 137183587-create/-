@@ -253,6 +253,17 @@ export const aiMotion = [
     desc: '针对老年人常见的多重用药问题，用 AI 动画讲清药物相互作用与安全用药要点。',
     media: '/ai-motion/AI老年人多重用药3min（开头）.mp4',
   },
+  {
+    title: '冰箱里的冷藏刺客',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'fridge-assassin',
+    tag: 'AI 动画 · 食品安全科普',
+    year: '2025',
+    status: '可演示',
+    card: 'blue',
+    desc: '把冰箱里的食品安全风险拟人成几个细菌「刺客」，用祖孙日常讲清冷藏食品安全的重点。',
+    media: '/ai-motion/冰箱里的冷藏刺客.mp4',
+  },
 ]
 
 /* ======================================================================
@@ -717,6 +728,120 @@ export const aiProjects = [
         label: '场景设定',
         note: '同一场景给出多角度参考，保证跨镜头一致',
         items: [{ name: '黄芪展馆', img: '/project-settings/huangqi-scene.webp' }],
+      },
+    ],
+  },
+  {
+    id: 'fridge-assassin',
+    name: '冰箱里的冷藏刺客',
+    subtitle: '食品安全科普 · 细菌拟人 × 祖孙日常',
+    summary:
+      '一部把冰箱里的食品安全风险拟人化的科普动画：几个细菌「刺客」潜伏在冷藏的瓶罐之间，' +
+      '奶奶与孙女在一段生活日常里逐步识别风险。特色菜拟人前后做了两版——第一版送审未采用，' +
+      '第二版（腌菜 / 姜母鸭 / 土笋冻）通过；片尾两位主角还换上贵州特色服饰。',
+    /* 面板头部的装饰背景图（仅作氛围，不承载信息） */
+    heroImage: '/project-settings/fridge-hero.webp',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建 LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '设定搭建',
+        tag: 'agent',
+        desc: '在画布中建立人物、道具、细菌三类设定节点；本片特色菜拟人先后出了两版，第一版送审未采用后整体重做第二版。',
+      },
+      {
+        title: '定妆送审',
+        tag: '本人',
+        desc: '角色与细菌拟人定妆图送审；特色菜拟人第一版未通过，按反馈重做第二版并通过后才继续。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点）。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑，并补上片尾两位主角的贵州特色换装。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 设定图：特色菜拟人两版 + 细菌拟人 + 主角人设与换装 */
+    settings: [
+      {
+        group: 'v1',
+        label: '特色菜拟人 · 第一版',
+        note: '送审后未采用，作为迭代对照保留',
+        items: [
+          { name: '卤味', img: '/project-settings/fridge-v1-luwei.webp' },
+          { name: '土笋冻', img: '/project-settings/fridge-v1-tusundong.webp' },
+          { name: '姜母鸭', img: '/project-settings/fridge-v1-jiangmuya.webp' },
+        ],
+      },
+      {
+        group: 'v2',
+        label: '特色菜拟人 · 第二版（通过）',
+        note: '在可爱度与实物辨识度之间重新平衡后定稿',
+        items: [
+          { name: '腌菜', img: '/project-settings/fridge-v2-yancai.webp' },
+          { name: '姜母鸭', img: '/project-settings/fridge-v2-jiangmuya.webp' },
+          { name: '土笋冻', img: '/project-settings/fridge-v2-tusundong.webp' },
+        ],
+      },
+      {
+        group: 'bacteria',
+        label: '细菌拟人',
+        note: '脚本提到的四种食源性致病菌拟人化同框',
+        items: [
+          {
+            name: '细菌合照（李斯特菌 / 耶尔森菌 / 沙门氏菌 / 志贺菌）',
+            img: '/project-settings/fridge-bacteria.webp',
+          },
+        ],
+      },
+      {
+        group: 'cast',
+        label: '主角人设 & 换装',
+        note: '正片形象 + 片尾贵州特色变装',
+        items: [
+          { name: '奶奶', img: '/project-settings/fridge-grandma.webp' },
+          { name: '奶奶 · 变装', img: '/project-settings/fridge-grandma-dressed.webp' },
+          { name: '孙女', img: '/project-settings/fridge-granddaughter.webp' },
+          { name: '孙女 · 变装', img: '/project-settings/fridge-granddaughter-dressed.webp' },
+        ],
       },
     ],
   },
