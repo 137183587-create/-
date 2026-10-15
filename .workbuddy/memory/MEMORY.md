@@ -28,7 +28,7 @@
 
 ## 交付验收（TDD/BDD）
 - 每功能先 Given/When/Then；交付附 checklist；构建通过 + 浏览器实测（点击/滚动/跳转）+ agent-browser 截图（`C:\Users\Mayn\.workbuddy\shots\`，eval 用 `var` 不 `const`）。
-- ⚠️ **agent-browser 用法**：① 导航→点击→截图**整条链塞进同一次 bash 调用**（跨调用页面会重置为空白）；② `screenshot` 是**位置参数** `[selector] [path]`，**无 `--path`**；③ 聚焦面板用**视口截图 + `scrollIntoView`**，别用 `--full`（fixed 层会失真）；④ 卡片点击用 `document.querySelectorAll('.ms__card')[i].click()` 比 `text=` 文本选择器稳。
+- ⚠️ **agent-browser 用法**：① 导航→点击→截图**整条链塞进同一次 bash 调用**（跨调用页面会重置为空白，截出来的图只有几 KB）；② `screenshot` 是**位置参数** `[selector] [path]`，**无 `--path`**；③ 聚焦面板用**视口截图 + `scrollIntoView`**，别用 `--full`（fixed 层会失真）；④ 卡片点击用 `document.querySelectorAll('.ms__card')[i].click()` 比 `text=` 文本选择器稳；⑤ ⚠️ **守护进程会假死**（曾整链 hung 9 分钟）——**一律用 `timeout 150 bash -c '…整链…'` 包裹**，超时即放弃重试，别裸跑。
 
 ## 项目卫生
 - 自动生成物每 ~5 轮扫描清理；安装包/备份/临时文件统一放 `E:\wangzhan\作品集网站开发过程残留备份\`，勿散放项目根/`.workbuddy`；`dist.bak/` 保留作回滚。
@@ -41,11 +41,12 @@
 - ⚠️ `node -e` 里 `fs.readFileSync('/tmp/x')` 会被解析成 `F:\tmp\x`；用 `$(cd /tmp && pwd -W)` 取 Windows 绝对路径。
 - **`aiProjects` 可选字段 `heroImage`**：面板头部装饰背景（仅氛围，双层 background = 遮罩渐变 + `var(--panel-hero)`，负 margin 出血到面板边缘）。不写则无背景。
 - **设定图网格**：`grp.items.length===1` 时自动整幅铺满（`ms__setgrid--single`，双类名提特异性防 ≤1180px 媒体查询盖回两列）。`.ms__set img` 用 **`aspect-ratio:var(--ms-set-aspect,16/9)`** + cover——默认 16:9（旧面板零影响），`onLoad` 读 `it.aspect`（数据显式指定，防布局跳动）或 natural 尺寸写入该变量。**竖版全身立绘**（如产后抑郁 `aspect:'9 / 16'`）因此不被裁。设定图若横竖混排，横图可不写 `aspect`（读 natural），竖图务必写。
-- **新项目命名**：`public/project-settings/<项目缩写>-*`，避免多项目撞名。已落地 6 个面板项目：
+- **新项目命名**：`public/project-settings/<项目缩写>-*`，避免多项目撞名。已落地 7 个面板项目：
   `lao-tou-chuang-guan`（倔老头，char-/prop-/scene-）、`alzheimer-care`（alz-char-*/alz-process/alz-hero）、
   `postpartum-depression`（ppd-face-*/ppd-body-*）、`eye-trauma-care`（eye-nurse/eye-mascot/eye-scene/eye-hero）、
   `huangqi`（太行黄芪，huangqi-boy/sage/specimen/furnace/wood/cane/scene/hero；人物2+道具4+场景1）、
-  `fridge-assassin`（冰箱里的冷藏刺客，fridge-v1-*/v2-*/bacteria/grandma[-dressed]/granddaughter[-dressed]/hero；**四组**：v1特色菜3+v2特色菜3+细菌1+主角换装4）。
+  `fridge-assassin`（冰箱里的冷藏刺客，fridge-v1-*/v2-*/bacteria/grandma[-dressed]/granddaughter[-dressed]/hero；**四组**：v1特色菜3+v2特色菜3+细菌1+主角换装4）、
+  `huangfumi`（陇原针灸皇甫谧，huangfumi-child/youth/mid/elder/patient/doctor/book/study/bedroom/clinic/gobi/hero；**四组** hfmi-period 主角四阶段4 + hfmi-cast 配角2 + hfmi-prop 道具1 + hfmi-scene 场景4；主角按幼/青/中/老**四人生阶段**出形象，非三视图）。
   关联方式：`aiMotion` 条目加 `project: '<id>'`（**必须**，否则面板静默不渲染）。
   ⚠️ **`settings[].group` 值必须全局唯一**（组件拿它做 React key）；需要超过 role/prop/scene 三组时用 v1/v2/bacteria/cast 这类自定义值，组件不校验取值。
 - **新增 AI 动画视频规格**（720p 起）：MP4 `libx264 crf26 preset slow +aac 96k +faststart`（≤7MB）；WebM `libvpx-vp9 crf34 cpu-used 3 +libopus 80k`；缩略图抽帧 1280 宽 webp q82。工具走 `node_modules/ffmpeg-static/ffmpeg.exe`（PATH 里没有 ffmpeg）。
