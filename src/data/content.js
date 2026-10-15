@@ -228,6 +228,8 @@ export const aiMotion = [
   },
   {
     title: 'AI 陇原针灸大家 · 皇甫谧',
+    // 关联项目介绍面板（见 aiProjects）
+    project: 'huangfumi',
     tag: 'AI 动画 · 医学可视化',
     year: '2024',
     status: '可演示',
@@ -841,6 +843,118 @@ export const aiProjects = [
           { name: '奶奶 · 变装', img: '/project-settings/fridge-grandma-dressed.webp' },
           { name: '孙女', img: '/project-settings/fridge-granddaughter.webp' },
           { name: '孙女 · 变装', img: '/project-settings/fridge-granddaughter-dressed.webp' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'huangfumi',
+    name: 'AI 陇原针灸大家 · 皇甫谧',
+    subtitle: '中医典籍科普 · 人物传记叙事',
+    summary:
+      '一部讲述魏晋针灸大家皇甫谧与《针灸甲乙经》的 AI 动画：从幼年苦读、青年立志，到中年行医、' +
+      '晚年著书，跨越幼年 / 青年 / 中年 / 老年四个人生阶段，把这部针灸典籍的成书过程讲成一段传记故事。' +
+      '书房、卧室、医馆与大漠戈壁四组场景铺开叙事空间；配角病人与大夫撑起就诊、施治的对手戏，' +
+      '核心道具《针灸甲乙经》贯穿全片。',
+    /* 面板头部的装饰背景图（仅作氛围，不承载信息） */
+    heroImage: '/project-settings/huangfumi-hero.webp',
+    /* 生产流程步骤：title 是环节，desc 是这一步实际做什么，tag 标注是我(agent)还是本人操作 */
+    pipeline: [
+      {
+        title: '脚本拆解',
+        tag: 'agent + 本人',
+        desc: '拿到编辑给的 Word 脚本后通读一遍，同时让 agent 逐段生成分镜描述；本人同步过一遍原文确认无误。',
+      },
+      {
+        title: '建 LibTV 画布',
+        tag: 'agent',
+        desc: '分析完成后，由 agent 在 LibTV 创建对应的项目画布。',
+      },
+      {
+        title: '设定搭建',
+        tag: 'agent',
+        desc: '在画布中建立人物、道具、场景三类设定节点；主角皇甫谧按幼年、青年、中年、老年四个年龄段分别出形象，锁各时期的发型、须发与神态。',
+      },
+      {
+        title: '定妆送审',
+        tag: '本人',
+        desc: '四个年龄段的皇甫谧、病人与大夫、以及核心道具《针灸甲乙经》定妆图送审，通过后才继续推进。',
+      },
+      {
+        title: '分镜节点',
+        tag: 'agent',
+        desc: '创建分镜图片节点（部分镜头直接建视频节点）。',
+      },
+      {
+        title: '逐镜校验',
+        tag: '本人',
+        desc: '检查每个节点的画面提示词与参考图连线是否准确、是否符合要求。',
+      },
+      {
+        title: '开篇视频',
+        tag: 'agent',
+        desc: '先生成开篇视频，作为整片的风格基准。',
+      },
+      {
+        title: '音色锁定',
+        tag: '本人',
+        desc: '从开篇视频中提取每个角色的配音，作为后续该角色的音色音域参考。',
+      },
+      {
+        title: '循环推进',
+        tag: '双方',
+        desc: '以上流程循环往复，直到全片分镜完成。',
+      },
+      {
+        title: '剪映剪辑',
+        tag: '本人',
+        desc: '生成的视频素材汇总到剪映里做最终剪辑，梳理传记叙事的时间线。',
+      },
+      {
+        title: '背景音乐',
+        tag: 'agent + 本人',
+        desc: '用 SonoAI 生成 BGM；提示词由 agent 依据脚本风格与节奏产出，复制丢给 Sono。',
+      },
+    ],
+    /* 设定图：主角人生四阶段 + 配角人设 + 道具设定 + 场景设定 */
+    settings: [
+      {
+        group: 'hfmi-period',
+        label: '主角形象 · 人生四阶段',
+        note: '同一角色的四个年龄段定妆，锁定各时期的发型、须发与神态',
+        items: [
+          { name: '幼年皇甫谧', img: '/project-settings/huangfumi-child.webp' },
+          { name: '青年皇甫谧', img: '/project-settings/huangfumi-youth.webp' },
+          { name: '中年皇甫谧', img: '/project-settings/huangfumi-mid.webp' },
+          { name: '老年皇甫谧', img: '/project-settings/huangfumi-elder.webp' },
+        ],
+      },
+      {
+        group: 'hfmi-cast',
+        label: '配角人设',
+        note: '就诊与施治的对手角色，一版全身三视图 + 面部',
+        items: [
+          { name: '病人', img: '/project-settings/huangfumi-patient.webp' },
+          { name: '大夫', img: '/project-settings/huangfumi-doctor.webp' },
+        ],
+      },
+      {
+        group: 'hfmi-prop',
+        label: '道具设定',
+        note: '核心道具出封面与多角度结构，锁定形制与纸张质感',
+        items: [
+          { name: '《针灸甲乙经》', img: '/project-settings/huangfumi-book.webp' },
+        ],
+      },
+      {
+        group: 'hfmi-scene',
+        label: '场景设定',
+        note: '四组空间各给多机位参考，保证跨镜头一致',
+        items: [
+          { name: '书房', img: '/project-settings/huangfumi-study.webp' },
+          { name: '卧室', img: '/project-settings/huangfumi-bedroom.webp' },
+          { name: '医馆', img: '/project-settings/huangfumi-clinic.webp' },
+          { name: '大漠戈壁', img: '/project-settings/huangfumi-gobi.webp' },
         ],
       },
     ],
