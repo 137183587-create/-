@@ -965,6 +965,7 @@ export const aiProjects = [
 export const comics = [
   {
     id: 'pci-rehab',
+    featured: true,
     title: '心血管中医护理 · PCI 术后康复',
     tag: '公众号条漫',
     category: '心血管 / 中医护理',
@@ -976,6 +977,7 @@ export const comics = [
   },
   {
     id: 'diabetes-obesity',
+    featured: true,
     title: '知糖控重 · 2 型糖尿病合并肥胖',
     tag: '公众号条漫',
     category: '内分泌 / 减重',
@@ -987,6 +989,7 @@ export const comics = [
   },
   {
     id: 'knee-joint',
+    featured: true,
     title: '中医膝关节',
     tag: '公众号条漫',
     category: '中医 / 骨科',
@@ -998,6 +1001,7 @@ export const comics = [
   },
   {
     id: 'hip-fracture',
+    featured: true,
     title: '创伤骨科 · 老年髋关节骨折',
     tag: '公众号条漫',
     category: '创伤骨科 / 老年医学',
@@ -1009,6 +1013,7 @@ export const comics = [
   },
   {
     id: 'diabetic-retinopathy',
+    featured: true,
     title: '别让糖尿病偷走视力 · 警惕糖尿病视网膜',
     tag: '公众号条漫',
     category: '内分泌 / 眼科',
@@ -1042,6 +1047,7 @@ export const comics = [
   },
   {
     id: 'elderly-fall',
+    featured: true,
     title: '老年人跌倒',
     tag: '公众号条漫',
     category: '老年医学 / 骨科',

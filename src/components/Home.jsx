@@ -4,9 +4,10 @@ import About from './About'
 import Projects from './Projects'
 import AiMotion from './AiMotion'
 import AiTools from './AiTools'
+import ComicsFeatured from './ComicsFeatured'
 import Advantages from './Advantages'
 import Contact from './Contact'
-import { aiMotion, aiTools } from '../data/content'
+import { aiMotion, aiTools, comics } from '../data/content'
 
 // 首页 AI 动画精选的展示层替换：把 PICC 槽位换成「多重用药」卡片。
 // 仅影响首页展示，不改动全量 aiMotion 数据——医学可视化聚合页仍保留 PICC。
@@ -18,6 +19,9 @@ const homeAiMotion = (() => {
   return aiMotion.map((m) => (m.media === HOME_SWAP_MEDIA ? poly : m))
 })()
 
+// 首页「精选长图案例」：comics 中标记 featured 的精选子集
+const featuredComics = comics.filter((c) => c.featured)
+
 export default function Home() {
   useSiteAnimations()
   return (
@@ -26,6 +30,7 @@ export default function Home() {
       <About />
       <Projects />
       <AiMotion items={homeAiMotion} limit={5} />
+      <ComicsFeatured items={featuredComics} />
       <AiTools items={aiTools} />
       <Advantages />
       <Contact />

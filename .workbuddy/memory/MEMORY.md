@@ -17,6 +17,7 @@
 - Hero：BridgeAI 风（全屏沉浸 + 居中超大标题 + 底部信息带），幕布揭幕开场。
 - 优势区：GradientCarousel（自写，复刻 React Bits Pro；构建期 sharp 预提取主色存 `tint`，零运行时开销）。Three.js 已移除。
 - 首页 AI 动画：伪 3D 球面环视 AiMotion（`ai-ring`，滚轮聚焦切换 + 纵深视差，到首/尾释放页面滚动）。
+- 首页精选长图：`ComicsFeatured`（在 AI 动画组**下方**，封面网格 3 列 + 点击 `ImageLightbox` 看完整长图，「查看全部长图 →」→ `/illustrations`）。数据取 `comics` 中 `featured:true` 的精选子集——**增减首页精选只改条目的 featured 开关**，不动组件。
 - /medical AI 动画区：MasonryCards（CSS `columns:2` 真瀑布流；contain 前景 + 模糊背景填黑边）。
 - 已集成手写 React Bits：Particles(About) / SpotlightCard(精选项目)。
 
