@@ -4,6 +4,7 @@ import { useSiteAnimations } from '../animations/useSiteAnimations'
 import { aiMotion, comics } from '../data/content'
 import MasonryCards from './MasonryCards'
 import ComicsList from './ComicsList'
+import ScienceComics from './ScienceComics'
 import VideoPlayer from './VideoPlayer'
 
 // 医学可视化插画& AI 动画 聚合页面
@@ -125,6 +126,9 @@ export default function MedicalVisualizationPage() {
         </div>
         <ComicsList />
       </section>
+
+      {/* ---------------- 公众号科普长图（与条漫并列的独立类目） ---------------- */}
+      <ScienceComics />
     </main>
   )
 }

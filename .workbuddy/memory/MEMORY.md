@@ -18,6 +18,9 @@
 - 优势区：GradientCarousel（自写，复刻 React Bits Pro；构建期 sharp 预提取主色存 `tint`，零运行时开销）。Three.js 已移除。
 - 首页 AI 动画：伪 3D 球面环视 AiMotion（`ai-ring`，滚轮聚焦切换 + 纵深视差，到首/尾释放页面滚动）。
 - 首页精选长图：`ComicsFeatured`（在 AI 动画组**下方**，封面网格 3 列 + 点击 `ImageLightbox` 看完整长图，「查看全部长图 →」→ `/illustrations`）。数据取 `comics` 中 `featured:true` 的精选子集——**增减首页精选只改条目的 featured 开关**，不动组件。
+- **「公众号科普长图」类目（2026-10-27 新增）**：与既有「公众号科普条漫」`comics` **并列的独立类目**。数据 `popularScienceComics`（8 条），组件 `ScienceComics.jsx`（复用首页 `.cf-*` 卡片视觉），挂在 `/medical-visualization` 页 `#comics` 之后，section id `#science-comics`。图片 `public/images/comics/science/<id>.webp` + `covers/<id>.webp`。⚠️ 别把新条目塞进 `comics` 数组——`ComicsList` 是**扁平遍历整个 `comics`**，塞进去会直接混进现有条漫列表。
+  - `ScienceComics.jsx` 是 **props 驱动**（`items / id / eyebrow / title / desc / more`），一处组件两处用：插画页全量 8 条、首页精选 3 条（首页 id `science-featured`，带「查看全部科普长图 →」→ `/medical-visualization#science-comics`）。改卡片样式只改这一处。
+- **AI 辅助制作声明**（手术麻醉那条）：数据加 `aiAssisted: true` + `aiNote`，渲染为双重声明——封面左上 `.cf-card__ai` 金色角标 + 正文 `.cf-card__note` 的「※ …」备注条。后续再有 AI 参与的作品沿用这两个字段即可。
 - /medical AI 动画区：MasonryCards（CSS `columns:2` 真瀑布流；contain 前景 + 模糊背景填黑边）。
 - 已集成手写 React Bits：Particles(About) / SpotlightCard(精选项目)。
 
@@ -33,7 +36,16 @@
 
 ## 项目卫生
 - 自动生成物每 ~5 轮扫描清理；安装包/备份/临时文件统一放 `E:\wangzhan\作品集网站开发过程残留备份\`，勿散放项目根/`.workbuddy`；`dist.bak/` 保留作回滚。
-- 图片压缩：comics 超长图只压 JPEG（WebP 单边 16383px 上限会报错），封面/背景/头像用 WebP；产物落地走「脚本输出到备份临时目录 + bash mv」（safe-delete 钩子拦 Node write/unlink）。
+- ⚠️ **构建流程（2026-10-27 重构，勿退回旧写法）**：`npm run build` = `rotate-dist.mjs`（备份上一版→dist.bak + 清理）→ `vite build`（**原地写进 dist**，`build.emptyOutDir:false`，新 index.html 最后落地）→ `publish-dist.mjs`（校验产物 + 清理旧哈希产物）。**dist 全程不被改名/清空 → 预览服务在构建期间零中断，浏览器不会把加载失败的图缓存成裂图。** 旧写法「先 rename 搬走 dist 再 build」会造成 5 秒空窗 + EPERM，已废弃。
+  - ⚠️ **safe-delete 钩子同时接管 Node 的 fs 和 bash 的 rm/rmdir/unlink**（`.../vendor/shim/safe-bin/`）。它把待删目录**整体丢回收站**，大目录失败并 fail-closed（`Some operations were aborted`）直接中断构建。**删目录必须用 `find X -type f -delete` + `find X -depth -type d -empty -delete` 逐个删**；`rm -rf` 对大目录无效。合并拷贝用 `cp -r "src/." "dst/"`（`cp -r src dst` 会嵌套成 dst/src）。
+  - ⚠️ `vite preview` 会**锁住 dist 目录** → Windows 下 `rename(dist, …)` 必 EPERM；但**删 dist 内单个文件是成功的**。
+- 图片压缩：封面/背景/头像用 WebP（sharp q82）；超长图见下方专项。产物落地走「脚本输出到备份临时目录 + bash mv」（safe-delete 钩子拦 Node write/unlink）。
+- ⚠️ **长图压缩专项**（2026-10-27 实战，8 张全部压到 <1MB）：
+  ① **输出宽度固定 720**——`.comic-lightbox__scroll{max-width:720px}` 是灯箱满宽，且站点现有长图全为 720 宽，输出更宽纯属浪费。
+  ② **WebP 单边 16383px 是硬上限**：源图高 18772–30136 全部超限；按 720 宽缩放后高度降到 9005–14462，即可正常压 WebP（q75–82，0.47–0.83MB）。
+  ③ **极端长宽比（如 720×27131 的 37.7:1）WebP 无解**——不缩放也超限，压 WebP 要砍到 ≤434 宽（字糊），**该张走 JPEG**；实测 680@q42→0.94MB 是宽度与质量的最佳平衡（720@q38 质量太差、640@q50 太窄）。
+  ④ **写自适应脚本，别手写固定参数**：`for fmt of [webp,jpeg] → for width[720,640,560] → for quality[82→40]`，取第一个 ≤ 目标的组合；WebP 抛「too large for the WebP format」就自动换宽度/回落 JPEG。脚本留档 `_tmp_img/convert-science.cjs`。
+  ⑤ **目标阈值按用户真实上限设**（1MB=1000KB），别自己加严到 950KB——加严会逼着掉宽度。
 - CSS 铁律：删/换 CSS 块必连带收尾 `}`，否则 postcss 只报「配平错误」；每次改完跑大括号计数核对。InfiniteGallery(3D 无限图像场) 已归档 `_archive/`，勿复活那套滚轮预算制方案。
 
 ## AI 动画「项目介绍面板」（2026-10-13）

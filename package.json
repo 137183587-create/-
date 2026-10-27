@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/rotate-dist.mjs && vite build",
+    "build": "node scripts/rotate-dist.mjs && vite build && node scripts/publish-dist.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
